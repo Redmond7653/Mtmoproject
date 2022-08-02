@@ -1,0 +1,23 @@
+<form id="ytyty" method="post">
+    Ім'я
+    <input type="text" name="Name" value="<?=$form['Name']?>">
+    <? if(isset($error['Name'])) : ?>
+        <div class="error"><?=$error['Name']?></div>
+    <? endif ?>
+
+    <br><br>
+    Адреса
+    <input type="text" name="Address">
+    <br><br>
+    ID
+    <input type="text" name="ID">
+    <br><br>
+    Тип
+    <input type="text" name="Type">
+    <br><br>
+    Джерело
+    <input type="text" name="Source">
+    <br><br>
+
+    <input type="submit" value="go">
+</form>
