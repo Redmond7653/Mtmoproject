@@ -1,5 +1,12 @@
 <table class="OLOLO">
     <thead>
+    <tr>
+        <?php foreach ($table_header as $cell) : ?>
+        <th>
+            <?=$cell == '-' ? '-=-' : $cell;?>
+        </th>
+        <?php endforeach; ?>
+    </tr>
     </thead>
     <tbody class="TBODY">
 

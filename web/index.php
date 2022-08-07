@@ -26,6 +26,7 @@ foreach ($reader->getSheetIterator() as $sheet) {
     if ($sheet->getIndex() === 0) {
 
         $table_rows = [];
+        $table_header = [];
         foreach ($sheet->getRowIterator() as $rowKey => $row) {
             if ($rowKey > 5 && $rowKey < 15) {
                 $tmp_cells = [];
@@ -37,24 +38,21 @@ foreach ($reader->getSheetIterator() as $sheet) {
                 }
                 $table_rows[] = $tmp_cells;
             }
-
-
-
-
-            if ($rowKey === 29) {
-                $data1 = [];
-                foreach ($row->getCells() as $cellKey => $cell) {
-                    if ($cellKey <= 33) {
-                        $data1[] = $cell->getValue();
-                    }
-                }
-//                echo "<pre>";
-//                var_export($data1);
-//                echo "</pre>";
+            if ($rowKey > 16) {
                 break;
             }
+            if ($rowKey == 3) {
+                $tmp_cells = [];
+                foreach ($row->getCells() as $cell) {
 
+                    // Check if cell is date to prevent convert error.
+                    $tmp_cells[] = $cell->isDate() ? $cell->getValue()->format('Y-m-d H:i') : $cell->getValue();
+
+                }
+                $table_header = $tmp_cells;
+            }
         }
+
 //        foreach ($sheet->getRowIterator() as $rowKey => $row) {
 //            if ($rowKey === 24) {
 //                $data = [];
@@ -70,7 +68,6 @@ foreach ($reader->getSheetIterator() as $sheet) {
 //            }
 //
 //        }
-
     }
     if ($rows_count > $rows_max) {
         break;
