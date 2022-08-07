@@ -1,23 +1,60 @@
+
 <form id="ytyty" method="post">
     Ім'я
     <input type="text" name="Name" value="<?=$form['Name']?>">
-    <? if(isset($error['Name'])) : ?>
-        <div class="error"><?=$error['Name']?></div>
+    <? if ($error = form_field_is_invalid('Name')) : ?>
+        <div class="error"><?=$error;?></div>
     <? endif ?>
+    <br><br>
 
-    <br><br>
     Адреса
-    <input type="text" name="Address">
+    <input type="text" name="Address" value="<?=$form['Address']?>">
+    <? if ($error = form_field_is_invalid('Address')) : ?>
+    <div class="error"><?=$error;?></div>
+    <? endif ?>
     <br><br>
+
     ID
-    <input type="text" name="ID">
+    <input type="text" name="ID" value="<?=$form['ID']?>">
+    <? if ($error = form_field_is_invalid('ID')) : ?>
+    <div class="error"><?=$error;?></div>
+    <? endif ?>
     <br><br>
+
     Тип
-    <input type="text" name="Type">
+    <input type="text" name="Type" value="<?=$form['Type']?>">
+    <? if ($error = form_field_is_invalid('Type')) : ?>
+    <div class="error"><?=$error;?></div>
+    <? endif ?>
     <br><br>
+
     Джерело
-    <input type="text" name="Source">
+    <input type="text" name="Source" value="<?=$form['Source']?>">
+    <? if ($error = form_field_is_invalid('Source')) : ?>
+    <div class="error"><?=$error;?></div>
+    <? endif ?>
     <br><br>
 
     <input type="submit" value="go">
+    <br><br>
+
+    <? if (isset_form()) : ?>
+    <div class="table">
+        <div class="table-row">
+            <div class="table-cell pointers">Імя</div>
+            <div class="table-cell pointers">Адреса</div>
+            <div class="table-cell pointers">ID</div>
+            <div class="table-cell pointers">Тип</div>
+            <div class="table-cell pointers">Джерело</div>
+        </div>
+        <div class="table-row">
+            <div class="table-cell"><output name="Name"><?=$_REQUEST['Name']?></output></div>
+            <div class="table-cell"><output name="Address"><?=$_REQUEST['Address']?></output></div>
+            <div class="table-cell"><output name="ID"><?=$_REQUEST['ID']?></output></div>
+            <div class="table-cell"><output name="Type"><?=$_REQUEST['Type']?></output></div>
+            <div class="table-cell"><output name="Source"><?=$_REQUEST['Source']?></output></div>
+        </div>
+    </div>
+    <? endif ?>
+
 </form>

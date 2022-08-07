@@ -1,0 +1,14 @@
+.results_tittle {
+    color: blue;
+}
+
+.border {
+    border: 1rem blue;
+}
+
+table.OLOLO {border-collapse: collapse;}
+
+table.OLOLO td {
+    border: 1px solid #666;
+    padding: 0.5em;
+}

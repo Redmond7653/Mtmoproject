@@ -1,0 +1,18 @@
+<table class="OLOLO">
+    <thead>
+    </thead>
+    <tbody class="TBODY">
+
+    <?php foreach ($table_rows as $table_row) : ?>
+    <tr>
+        <?php foreach ($table_row as $cell) : ?>
+            <td>
+                <?=$cell == '-' ? '-=-' : $cell;?>
+            </td>
+        <?php endforeach; ?>
+    </tr>
+    <?php endforeach; ?>
+
+
+    </tbody>
+</table>
