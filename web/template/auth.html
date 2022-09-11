@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Тест</title>
+</head>
+<body>
+    <div class="count">
+        Count is: <?= $_SESSION['count'] ?>
+    </div>
+
+    <?php if (!empty($_SESSION['user'])) : ?>
+        Привіт <?=$_SESSION['user']['name']?>. Щоб вийти нажміть
+        <form action="index.php" method="post" style="display: inline-block">
+            <input type="hidden" name="action" value="logout">
+            <input type="submit" name="submit" id="submit" value="Exit">
+        </form>
+
+        <form action="index.php" method="post">
+            <input type="hidden" name="action" value="message">
+            <input type="text" name="name" placeholder="Ім'я"/><br><br>
+            <textarea name="message" placeholder="Повідомлення"/></textarea>
+            <p><input type="submit" value="Відправити"/></p>
+        </form>
+
+        <form action="index.php" method="post">
+            <input type="hidden" name="action" value="change_pass">
+            <input type="submit" value="Змінити пароль">
+        </form>
+
+
+    <?php else:?>
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+            <form action="index.php" method="post">
+                <input type="hidden" name="action" value="login">
+                <input type="text" class="form-control" name="login" id="login" placeholder="Введіть логін"><br>
+                <input type="text" class="form-control" name="pass" id="pass" placeholder="Введіть пароль"><br>
+                <p>
+                    <label>
+                        <input type="submit" name="submit" id="submit" value="Авторизуватися">
+                    </label>
+
+                </p>
+            </form>
+            <form action="index.php" method="post" style="display: inline-block">
+                <input type="hidden" name="action" value="register">
+                <input type="submit" name="submit" id="submit" value="Register">
+            </form>
+        </div>
+
+        <?php endif;?>
+    </div>
+</body>
+</html>

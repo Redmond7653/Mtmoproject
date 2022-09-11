@@ -1,7 +1,8 @@
 {
   "require": {
     "box/spout": "v3.3.0.*",
-    "phpoffice/phpspreadsheet": "^1.23"
+    "phpoffice/phpspreadsheet": "^1.23",
+    "ext-mysqli": "*"
   },
   "config": {
     "platform": {
