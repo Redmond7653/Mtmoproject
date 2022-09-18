@@ -15,7 +15,7 @@
             <input type="hidden" name="action" value="logout">
             <input type="submit" name="submit" id="submit" value="Exit">
         </form><br>
-    <div>Повідомлення: <br><br> <?=$user_name.' : '.$user_message?></div>
+        <div>Повідомлення: <br><br><?=$user_name?> : <?= show_user_messages($_SESSION['user']['id'])?> </div><br>
 
         <form action="index.php" method="post">
             <input type="hidden" name="action" value="message">

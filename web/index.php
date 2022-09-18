@@ -9,6 +9,7 @@ if (isset($_SESSION['count'])) {
 }
 
 include 'settings.php';
+include 'tools.php';
 
 
 $action = NULL;

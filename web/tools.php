@@ -61,3 +61,23 @@ function isset_form() {
     return isset($_REQUEST['Name']);
 }
 
+function show_user_messages($user_id = NULL) {
+    if (!$user_id) {
+        $user_id = $_SESSION['user']['id'];
+    }
+
+    $db = db_connect();
+
+    if ($user_message_array = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$user_id' ORDER BY `id` DESC LIMIT 10")) {
+        $show_user_messages = $user_message_array->fetch_all();
+    }
+
+    $user_messages = '';
+    foreach ($show_user_messages as $user_array) {
+        $user_messages .= "<div>".$user_array[2]."</div>";
+    }
+
+    $db->close();
+
+    return $user_messages;
+}

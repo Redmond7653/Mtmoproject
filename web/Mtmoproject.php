@@ -28,7 +28,7 @@ foreach ($reader->getSheetIterator() as $sheet) {
         $table_rows = [];
         $table_header = [];
         foreach ($sheet->getRowIterator() as $rowKey => $row) {
-            if ($rowKey > 5 && $rowKey < 10) {
+            if ($rowKey > 5 && $rowKey < 200) {
                 $tmp_cells = [];
                 foreach ($row->getCells() as $cell) {
 

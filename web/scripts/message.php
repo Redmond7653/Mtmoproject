@@ -14,18 +14,31 @@ if ($tweet = $db->query("SELECT * FROM `messages` WHERE `message` = '$message'")
     echo db_error(__LINE__ . ':' . __FILE__, $db);
 }
 
-if ($user_message_array = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$user_id' ORDER BY `id` DESC LIMIT 3")) {
-    $show_user_message = $user_message_array->fetch_assoc();
-}
-
 if ($user_name_array = $db->query("SELECT `id`, `name` FROM `users` WHERE `id` = '$user_id'")) {
     $show_user_name = $user_name_array->fetch_assoc();
 }
 
 
 $user_name = $show_user_name['name'];
-$user_message = $show_user_message['message'];
+//$test_array = $user_array;
+//foreach ($test_array as $user_elements) {
+//    $user_message = $user_elements[2];
+//}
+
+
 
 $db->close();
+
+//for ($show_user_message['id'] = $show_user_message['id'] - 10; $show_user_message['id'] <= $show_user_message['id'] + 10; $show_user_message['id']++) {
+//    $user_message = $show_user_message['message'];
+//}
+
+
+//$test_array = $show_user_message;
+//foreach ($test_array as $show_user_message['id']) {
+//    foreach ($show_user_message['id'] as $show_user_message['message']){
+//        $user_message = $show_user_message['message'];
+//    }
+//}
 
 include 'template/auth.html';
