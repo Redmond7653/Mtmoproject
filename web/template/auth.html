@@ -19,8 +19,9 @@
             <input type="hidden" name="action" value="logout">
             <input type="submit" name="submit" id="submit" value="Exit">
         </form><br>
-        <div>Повідомлення: <br><br><?=$user_name?> : <?= show_user_messages($_SESSION['user']['id'])?></div><br>
+        <div>Повідомлення: <br><br><?=$user_name?> <?= show_user_messages($_SESSION['user']['id'])?></div><br>
 
+        <div><?=get_messages_number($_SESSION['user']['id'])?>&nbsp;messages in total</div>
         <div style="display: flex;">
 <!--        <form action="index.php" method="post">-->
 <!--            <input type="hidden" name="page" value="1">-->

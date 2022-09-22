@@ -88,22 +88,11 @@ function show_user_messages($user_id = NULL, $limit = 5) {
     }
     db_error(__LINE__, $db);
 
+
     $user_messages = "<h2>Page ".($page+1)."</h2>";
     foreach ($show_user_messages as $user_array) {
         $user_messages .= "<div>".nl2br($user_array['message'])."</div><hr>";
     }
-
-    if ($user_message_array1 = $db->query("
-            SELECT COUNT(id) AS cnt
-            FROM `messages` 
-            WHERE `user_id` = '{$user_id}'
-            "
-    )) {
-        $user_count_messages = $user_message_array1->fetch_array()[0];
-    }
-
-
-
 
     $db->close();
 
@@ -111,6 +100,12 @@ function show_user_messages($user_id = NULL, $limit = 5) {
 }
 
 function get_pages_number($user_id = NULL, $limit = 5) {
+    $page_number = get_messages_number($user_id)/$limit;
+    // @todo: return actual numbers of pages for this user
+    return $page_number;
+}
+
+function get_messages_number($user_id = NULL) {
     $db = db_connect();
     if ($user_message_array1 = $db->query("
             SELECT COUNT(id) AS cnt
@@ -121,8 +116,6 @@ function get_pages_number($user_id = NULL, $limit = 5) {
         $user_count_messages = $user_message_array1->fetch_array()[0];
     }
 
-    $page_number = $user_count_messages/$limit;
-    // @todo: return actual numbers of pages for this user
     $db->close();
-    return $page_number;
+    return $user_count_messages;
 }
