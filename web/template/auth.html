@@ -5,6 +5,10 @@
     <title>Тест</title>
 </head>
 <body>
+    <div class="test">A
+    B
+    C
+    </div>
     <div class="count">
         Count is: <?= $_SESSION['count'] ?>
     </div>
@@ -15,13 +19,32 @@
             <input type="hidden" name="action" value="logout">
             <input type="submit" name="submit" id="submit" value="Exit">
         </form><br>
-        <div>Повідомлення: <br><br><?=$user_name?> : <?= show_user_messages($_SESSION['user']['id'])?> </div><br>
+        <div>Повідомлення: <br><br><?=$user_name?> : <?= show_user_messages($_SESSION['user']['id'])?></div><br>
+
+        <div style="display: flex;">
+<!--        <form action="index.php" method="post">-->
+<!--            <input type="hidden" name="page" value="1">-->
+<!--            <p><input type="submit" value="page 1"/></p>-->
+<!--        </form>-->
+<!---->
+<!--        <form action="index.php" method="post">-->
+<!--            <input type="hidden" name="page" value="2">-->
+<!--            <p><input type="submit" value="page 2"/></p>-->
+<!--        </form>-->
+            <?php for ($i = 1; $i <= get_pages_number($_SESSION['user']['id']); $i++) : ?>
+                <form action="index.php" method="post">
+                    <input type="hidden" name="page" value="<?=$i?>">
+                    <p><input type="submit" value="page <?=$i?>"/></p>
+                </form>
+            <?php endfor; ?>
+        </div>
 
         <form action="index.php" method="post">
             <input type="hidden" name="action" value="message">
             <textarea name="message" placeholder="Повідомлення"/></textarea>
             <p><input type="submit" value="Відправити"/></p>
         </form>
+
 
         <form action="index.php" method="post">
             <input type="hidden" name="action" value="change_pass">

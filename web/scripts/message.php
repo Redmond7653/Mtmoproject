@@ -20,25 +20,10 @@ if ($user_name_array = $db->query("SELECT `id`, `name` FROM `users` WHERE `id` =
 
 
 $user_name = $show_user_name['name'];
-//$test_array = $user_array;
-//foreach ($test_array as $user_elements) {
-//    $user_message = $user_elements[2];
-//}
+
 
 
 
 $db->close();
-
-//for ($show_user_message['id'] = $show_user_message['id'] - 10; $show_user_message['id'] <= $show_user_message['id'] + 10; $show_user_message['id']++) {
-//    $user_message = $show_user_message['message'];
-//}
-
-
-//$test_array = $show_user_message;
-//foreach ($test_array as $show_user_message['id']) {
-//    foreach ($show_user_message['id'] as $show_user_message['message']){
-//        $user_message = $show_user_message['message'];
-//    }
-//}
 
 include 'template/auth.html';
