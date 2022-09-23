@@ -47,4 +47,4 @@ $_SESSION['user'] = $user;
 
 $db->close();
 
-include 'template/auth.html';
+include 'template/messages.html';

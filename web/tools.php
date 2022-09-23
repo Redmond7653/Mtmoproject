@@ -68,10 +68,12 @@ function show_user_messages($user_id = NULL, $limit = 5) {
 
     $db = db_connect();
 
+    $page = 1;
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
+    }
     if (isset($_POST['page'])) {
         $page = $_POST['page'];
-    } else {
-        $page = 1;
     }
 
     $page = $page - 1;
@@ -118,4 +120,32 @@ function get_messages_number($user_id = NULL) {
 
     $db->close();
     return $user_count_messages;
+}
+
+function get_custom_message() {
+
+    if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {
+        $db = db_connect();
+
+//        $id_number = $_POST['custom_message'] ?? $_GET['custom_message'] ?? FALSE;
+        $id_number = $_POST['custom_message'] ?? $_GET['custom_message'];
+
+
+
+
+        $method = isset($_POST['custom_message']) ? "_POST_" : "_GET_";
+
+        if ($user_custom_message_array = $db->query("SELECT * FROM `messages` WHERE `id` = '$id_number'")) {
+            $custom_message_array = $user_custom_message_array->fetch_assoc();
+        }
+        $custom_message = "<h3>Message #{$custom_message_array['id']}, method {$method}</h3>";
+        $custom_message .= "<div>".$custom_message_array['message']."</div>";
+        $custom_message .= "<hr>";
+
+
+            $db->close();
+        return $custom_message;
+
+    }
+
 }

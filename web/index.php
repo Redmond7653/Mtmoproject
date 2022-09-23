@@ -43,7 +43,17 @@ switch ($action) {
         break;
 
     default:
-        include 'template/auth.html';
+        if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {
+            include 'template/custom_message.html';
+            break;
+        }
+        if (!empty($_SESSION['user'])) {
+            include 'template/messages.html';
+        }
+        if (empty($_SESSION['user'])) {
+            include 'template/auth.html';
+        }
+
 }
 
 
