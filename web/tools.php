@@ -147,5 +147,54 @@ function get_custom_message() {
         return $custom_message;
 
     }
-
 }
+
+function select_users_names() {
+    $db = db_connect();
+
+    $a = select_unique_authors();
+    if (empty($a)) {
+        $a = '0';
+    } else {
+        $a = implode(',', $a);
+    }
+
+    // SELECT * FROM `users` WHERE id=250 OR id=251 OR id=252
+    if ($select_all_users_array = $db->query("SELECT * FROM `users` WHERE id IN ({$a})")) {
+        $select_users_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+    }
+    $select_user_names = [];
+    foreach ($select_users_array as $select_custom_users_array) {
+        $select_user_names[] = $select_custom_users_array['name'];
+    }
+    $db->close();
+    return $select_user_names;
+}
+
+function select_unique_authors() {
+    $db = db_connect();
+
+    if ($select_all_users_array = $db->query("SELECT DISTINCT `user_id` FROM `messages` ")) {
+        $select_users_id_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+    }
+    $select_user_names = [];
+    foreach ($select_users_id_array as $select_custom_users_array) {
+        $select_user_names[] = $select_custom_users_array['user_id'];
+    }
+    $db->close();
+    return $select_user_names;
+}
+
+
+function count_users_name() {
+    $db = db_connect();
+
+    if ($user_name_count_array = $db->query("SELECT COUNT(`name`) AS cnt FROM `users`")) {
+        $user_count_array = $user_name_count_array->fetch_array()[0];
+    }
+    $db->close();
+    return $user_count_array;
+}
+
+
+

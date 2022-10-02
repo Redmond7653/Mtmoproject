@@ -26,4 +26,4 @@ $user_name = $show_user_name['name'];
 
 $db->close();
 
-include 'template/auth.html';
+include 'template/messages.html';

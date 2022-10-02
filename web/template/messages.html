@@ -40,17 +40,26 @@
     <input type="submit" value="custom message"/>
 </form>
 </p>
+
+<div>
+<select name="select">
+    <?php $all_users = select_users_names() ?>
+    <?php foreach ($all_users as $user) : ?>
+        <option value="value1"><?=$user?></option>
+    <?php endforeach; ?>
+</select>
+
 <!--<form action="index.php" method="post">-->
 <!--    <input type="hidden" name="custom_message" value="hide_custom_message">-->
 <!--    <p><input type="submit" value="hide custom message"/></p>-->
 <!--</form>-->
-
 
 <form action="index.php" method="post">
     <input type="hidden" name="action" value="message">
     <textarea name="message" placeholder="Повідомлення"/></textarea>
     <p><input type="submit" value="Відправити"/></p>
 </form>
+</div>
 
 
 <form action="index.php" method="post">
