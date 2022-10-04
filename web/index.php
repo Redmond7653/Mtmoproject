@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+unset($_SESSION['show_user_message']);
 
 if (isset($_SESSION['count'])) {
     $_SESSION['count']++;
@@ -40,6 +41,10 @@ switch ($action) {
 
     case 'confirm_password':
         include "scripts/confirm_pass.php";
+        break;
+    case 'show_user_message':
+        $_SESSION['show_user_message'] = $_POST['user_id'];
+        include 'template/messages.html';
         break;
 
     default:

@@ -62,6 +62,10 @@ function isset_form() {
 }
 
 function show_user_messages($user_id = NULL, $limit = 5) {
+
+    $a = select_users_id();
+
+
     if (!$user_id) {
         $user_id = $_SESSION['user']['id'];
     }
@@ -165,10 +169,33 @@ function select_users_names() {
     }
     $select_user_names = [];
     foreach ($select_users_array as $select_custom_users_array) {
-        $select_user_names[] = $select_custom_users_array['name'];
+        $select_user_names[$select_custom_users_array['id']] = $select_custom_users_array['name'];
     }
     $db->close();
     return $select_user_names;
+}
+
+function select_users_id()
+{
+    $db = db_connect();
+
+    $a = select_unique_authors();
+    if (empty($a)) {
+        $a = '0';
+    } else {
+        $a = implode(',', $a);
+    }
+
+    // SELECT * FROM `users` WHERE id=250 OR id=251 OR id=252
+    if ($select_all_users_array = $db->query("SELECT * FROM `users` WHERE id IN ({$a})")) {
+        $select_users_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+    }
+    $select_user_id = [];
+    foreach ($select_users_array as $select_custom_users_array) {
+        $select_user_id[] = $select_custom_users_array['id'];
+    }
+    $db->close();
+   return $select_user_id;
 }
 
 function select_unique_authors() {
@@ -186,15 +213,15 @@ function select_unique_authors() {
 }
 
 
-function count_users_name() {
-    $db = db_connect();
-
-    if ($user_name_count_array = $db->query("SELECT COUNT(`name`) AS cnt FROM `users`")) {
-        $user_count_array = $user_name_count_array->fetch_array()[0];
-    }
-    $db->close();
-    return $user_count_array;
-}
+//function count_users_name() {
+//    $db = db_connect();
+//
+//    if ($user_name_count_array = $db->query("SELECT COUNT(`name`) AS cnt FROM `users`")) {
+//        $user_count_array = $user_name_count_array->fetch_array()[0];
+//    }
+//    $db->close();
+//    return $user_count_array;
+//}
 
 
 

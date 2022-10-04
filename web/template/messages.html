@@ -8,7 +8,7 @@
     <input type="hidden" name="action" value="logout">
     <input type="submit" name="submit" id="submit" value="Exit">
 </form><br>
-<div>Повідомлення: <br><br><?=$user_name?> <?= show_user_messages($_SESSION['user']['id'])?></div><br>
+<div>Повідомлення: <br><br><?=$user_name?> <?=show_user_messages($_SESSION['user']['id'])?></div><br>
 
 <div><?=get_messages_number($_SESSION['user']['id'])?>&nbsp;messages in total</div>
 <div style="display: flex;">
@@ -41,24 +41,30 @@
 </form>
 </p>
 
-<div>
-<select name="select">
-    <?php $all_users = select_users_names() ?>
-    <?php foreach ($all_users as $user) : ?>
-        <option value="value1"><?=$user?></option>
-    <?php endforeach; ?>
-</select>
+<div style="display: flex">
 
-<!--<form action="index.php" method="post">-->
-<!--    <input type="hidden" name="custom_message" value="hide_custom_message">-->
-<!--    <p><input type="submit" value="hide custom message"/></p>-->
-<!--</form>-->
+    <form action="index.php" method="post">
+        <select name="user_id">
+            <?php $all_users = select_users_names() ?>
+            <?php foreach ($all_users as $key=>$user) : ?>
+                <option value="<?=$key?>"><?=$user?></option>
+            <?php endforeach; ?>
+        </select>
+        <input type="hidden" name="action" value="show_user_message">
+        <input type="submit" value="Показати повідомлення">
+    </form>
 
-<form action="index.php" method="post">
-    <input type="hidden" name="action" value="message">
-    <textarea name="message" placeholder="Повідомлення"/></textarea>
-    <p><input type="submit" value="Відправити"/></p>
-</form>
+    <div>
+        <div>Повідомлення: <br><br> <?=show_user_messages($_SESSION['show_user_message'])?></div><br>
+    </div>
+
+    <div>
+        <form action="index.php" method="post">
+            <input type="hidden" name="action" value="message">
+            <textarea name="message" placeholder="Повідомлення"/></textarea>
+            <p><input type="submit" value="Відправити"/></p>
+        </form>
+    </div>
 </div>
 
 

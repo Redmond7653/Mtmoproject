@@ -1,5 +1,7 @@
 <?php
 
+
+
 $user_id = $_SESSION['user']['id'];
 $message = $_POST['message'];
 
