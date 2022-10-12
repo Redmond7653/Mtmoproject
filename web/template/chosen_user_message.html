@@ -1,0 +1,25 @@
+<div style="display: block">
+    <div><hr></div>
+    <div>
+        <form action="index.php" method="post">
+            <select name="user_id">
+                <?php $all_users = select_users_names() ?>
+                <?php foreach ($all_users as $key=>$user) : ?>
+                    <option value="<?=$key?>"><?=$user?></option>
+                <?php endforeach; ?>
+            </select>
+            <input type="hidden" name="action" value="chosen_user_message">
+            <input type="submit" value="Показати повідомлення">
+        </form>
+    </div>
+
+    <div style="display: ">
+        <div style="display: inline-block">Повідомлення: <br><br> <?=show_user_messages($_SESSION['show_user_message'])?></div><br>
+    </div>
+
+    <form action="index.php" method="post">
+        <input type="hidden" name="action" value="default">
+        <input type="submit" value="Повернутися">
+    </form>
+</div>
+

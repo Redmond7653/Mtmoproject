@@ -42,10 +42,25 @@ switch ($action) {
     case 'confirm_password':
         include "scripts/confirm_pass.php";
         break;
+
     case 'show_user_message':
-        $_SESSION['show_user_message'] = $_POST['user_id'];
         include 'template/messages.html';
         break;
+
+    case 'chosen_user_message':
+        $_SESSION['show_user_message'] = $_POST['user_id'];
+        include 'template/chosen_user_message.html';
+        break;
+
+    case 'show_custom_message':
+        include 'template/show_custom_message.html';
+        break;
+
+    case 'show_select_pictures':
+        $picture = $_POST['picture_name'];
+        include 'template/messages.html';
+        break;
+
 
     default:
         if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {

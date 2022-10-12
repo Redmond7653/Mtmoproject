@@ -8,10 +8,10 @@
     <input type="hidden" name="action" value="logout">
     <input type="submit" name="submit" id="submit" value="Exit">
 </form><br>
-<div>Повідомлення: <br><br><?=$user_name?> <?=show_user_messages($_SESSION['user']['id'])?></div><br>
+<div>Повідомлення: <br><br> <?=show_user_messages($_SESSION['user']['id'])?></div><br>
 
 <div><?=get_messages_number($_SESSION['user']['id'])?>&nbsp;messages in total</div>
-<div style="display: flex;">
+<div style="display: flex">
     <!--        <form action="index.php" method="post">-->
     <!--            <input type="hidden" name="page" value="1">-->
     <!--            <p><input type="submit" value="page 1"/></p>-->
@@ -22,49 +22,26 @@
     <!--            <p><input type="submit" value="page 2"/></p>-->
     <!--        </form>-->
     <?php for ($i = 1; $i <= get_pages_number($_SESSION['user']['id']); $i++) : ?>
-        <a href="/index.php?page=<?=$i?>">Get <?=$i?></a>
-        <form action="index.php" method="post">
-            <input type="hidden" name="page" value="<?=$i?>">
-            <p><input type="submit" value="page <?=$i?>"/></p>
-        </form>
+        <div>
+            <div style="display: block">
+                <a href="/index.php?page=<?=$i?>">Get <?=$i?></a>
+            </div>
+            <div style="display: block">
+                <form action="index.php" method="post">
+                    <input type="hidden" name="page" value="<?=$i?>">
+                    <p><input type="submit" value="page <?=$i?>"/></p>
+                </form>
+            </div>
+        </div>
     <?php endfor; ?>
 </div>
 
-<div><?=get_custom_message()?></div>
-
-<a href="/index.php?custom_message=361">get message</a>
-
-<p>
-<form action="index.php" method="post">
-    <input type="text" name="custom_message" value="361">
-    <input type="submit" value="custom message"/>
-</form>
-</p>
-
-<div style="display: flex">
-
+<div>
     <form action="index.php" method="post">
-        <select name="user_id">
-            <?php $all_users = select_users_names() ?>
-            <?php foreach ($all_users as $key=>$user) : ?>
-                <option value="<?=$key?>"><?=$user?></option>
-            <?php endforeach; ?>
-        </select>
-        <input type="hidden" name="action" value="show_user_message">
-        <input type="submit" value="Показати повідомлення">
+        <input type="hidden" name="action" value="message">
+        <textarea name="message" placeholder="Повідомлення"/></textarea>
+        <p><input type="submit" value="Відправити"/></p>
     </form>
-
-    <div>
-        <div>Повідомлення: <br><br> <?=show_user_messages($_SESSION['show_user_message'])?></div><br>
-    </div>
-
-    <div>
-        <form action="index.php" method="post">
-            <input type="hidden" name="action" value="message">
-            <textarea name="message" placeholder="Повідомлення"/></textarea>
-            <p><input type="submit" value="Відправити"/></p>
-        </form>
-    </div>
 </div>
 
 
@@ -72,3 +49,31 @@
     <input type="hidden" name="action" value="change_pass">
     <input type="submit" value="Змінити пароль">
 </form>
+
+
+<form action="index.php" method="post">
+    <input type="hidden" name="action" value="chosen_user_message">
+    <input type="submit" value="Показати повідомлення користувачів">
+</form>
+
+<form action="index.php" method="post">
+    <input type="hidden" name="action" value="show_custom_message">
+    <input type="submit" value="Показати вибране повідомлення користувача">
+</form>
+
+
+<form action="index.php" method="post">
+    <select name="picture_name">
+        <?php $all_images = select_unique_images() ?>
+        <?php foreach ($all_images as $key=>$user) : ?>
+            <option value="<?=$user?>"><?=$key?></option>
+        <?php endforeach; ?>
+    </select>
+    <input type="hidden" name="action" value="show_select_pictures">
+    <input type="submit" value="Показати картинку">
+</form>
+
+<div>
+    <img src="<?=$picture?>">
+</div>
+

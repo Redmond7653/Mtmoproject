@@ -62,13 +62,11 @@ function isset_form() {
 }
 
 function show_user_messages($user_id = NULL, $limit = 5) {
-
-    $a = select_users_id();
-
-
+    
     if (!$user_id) {
         $user_id = $_SESSION['user']['id'];
     }
+    
 
     $db = db_connect();
 
@@ -79,6 +77,7 @@ function show_user_messages($user_id = NULL, $limit = 5) {
     if (isset($_POST['page'])) {
         $page = $_POST['page'];
     }
+
 
     $page = $page - 1;
     $offset = $page * $limit;
@@ -175,28 +174,28 @@ function select_users_names() {
     return $select_user_names;
 }
 
-function select_users_id()
-{
-    $db = db_connect();
-
-    $a = select_unique_authors();
-    if (empty($a)) {
-        $a = '0';
-    } else {
-        $a = implode(',', $a);
-    }
-
-    // SELECT * FROM `users` WHERE id=250 OR id=251 OR id=252
-    if ($select_all_users_array = $db->query("SELECT * FROM `users` WHERE id IN ({$a})")) {
-        $select_users_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
-    }
-    $select_user_id = [];
-    foreach ($select_users_array as $select_custom_users_array) {
-        $select_user_id[] = $select_custom_users_array['id'];
-    }
-    $db->close();
-   return $select_user_id;
-}
+//function select_users_id()
+//{
+//    $db = db_connect();
+//
+//    $a = select_unique_authors();
+//    if (empty($a)) {
+//        $a = '0';
+//    } else {
+//        $a = implode(',', $a);
+//    }
+//
+//    // SELECT * FROM `users` WHERE id=250 OR id=251 OR id=252
+//    if ($select_all_users_array = $db->query("SELECT * FROM `users` WHERE id IN ({$a})")) {
+//        $select_users_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+//    }
+//    $select_user_id = [];
+//    foreach ($select_users_array as $select_custom_users_array) {
+//        $select_user_id[] = $select_custom_users_array['id'];
+//    }
+//    $db->close();
+//   return $select_user_id;
+//}
 
 function select_unique_authors() {
     $db = db_connect();
@@ -212,16 +211,32 @@ function select_unique_authors() {
     return $select_user_names;
 }
 
+function select_unique_images() {
+    $db = db_connect();
 
-//function count_users_name() {
+    if ($select_all_users_array = $db->query("SELECT * FROM `images` WHERE `ID`  ")) {
+        $select_images_id_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+    }
+    $select_images_names = [];
+    foreach ($select_images_id_array as $select_custom_images_array) {
+        $select_images_names[$select_custom_images_array['name']] = $select_custom_images_array['img'];
+    }
+    $db->close();
+    return $select_images_names;
+}
+
+//function show_unique_images() {
 //    $db = db_connect();
 //
-//    if ($user_name_count_array = $db->query("SELECT COUNT(`name`) AS cnt FROM `users`")) {
-//        $user_count_array = $user_name_count_array->fetch_array()[0];
+//    if ($select_all_users_array = $db->query("SELECT * FROM `images` WHERE `ID`  ")) {
+//        $select_images_id_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+//    }
+//    $select_images_names = [];
+//    foreach ($select_images_id_array as $select_custom_images_array) {
+//        $select_images_names[$select_custom_images_array['img']] = $select_custom_images_array['name'];
 //    }
 //    $db->close();
-//    return $user_count_array;
+//    return $select_images_names;
 //}
-
 
 
