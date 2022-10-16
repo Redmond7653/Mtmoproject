@@ -104,6 +104,7 @@ function show_user_messages($user_id = NULL, $limit = 5) {
     return $user_messages;
 }
 
+
 function get_pages_number($user_id = NULL, $limit = 5) {
     $page_number = get_messages_number($user_id)/$limit;
     // @todo: return actual numbers of pages for this user

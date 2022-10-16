@@ -61,6 +61,14 @@ switch ($action) {
         include 'template/messages.html';
         break;
 
+    case 'upload_image':
+        include 'scripts/upload.php';
+        break;
+
+    case 'go_to_upload_image':
+        include 'template/upload_images.html';
+        break;
+
 
     default:
         if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {

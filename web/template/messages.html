@@ -63,10 +63,16 @@
 
 
 <form action="index.php" method="post">
+    <input type="hidden" name="action" value="go_to_upload_image">
+    <input type="submit" value="Загрузити картинку" name="submit">
+</form>
+
+
+<form action="index.php" method="post">
     <select name="picture_name">
         <?php $all_images = select_unique_images() ?>
-        <?php foreach ($all_images as $key=>$user) : ?>
-            <option value="<?=$user?>"><?=$key?></option>
+        <?php foreach ($all_images as $image) : ?>
+            <option value="<?=$image?>"><?=basename($image)?></option>
         <?php endforeach; ?>
     </select>
     <input type="hidden" name="action" value="show_select_pictures">
