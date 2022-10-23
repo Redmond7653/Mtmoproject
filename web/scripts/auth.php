@@ -42,6 +42,8 @@ if (!$all_ok) {
     exit;
 }
 
+
+
 //setcookie('user', $user['name'], time()+ 3600, '/');
 $_SESSION['user'] = $user;
 

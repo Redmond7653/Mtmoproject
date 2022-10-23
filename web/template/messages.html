@@ -37,9 +37,11 @@
 </div>
 
 <div>
-    <form action="index.php" method="post">
+    <form action="index.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="action" value="message">
         <textarea name="message" placeholder="Повідомлення"/></textarea>
+        <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
+<!--        <input type="submit" value="Upload Image" name="submit">-->
         <p><input type="submit" value="Відправити"/></p>
     </form>
 </div>
@@ -69,17 +71,24 @@
 
 
 <form action="index.php" method="post">
-    <select name="picture_name">
-        <?php $all_images = select_unique_images() ?>
-        <?php foreach ($all_images as $image) : ?>
-            <option value="<?=$image?>"><?=basename($image)?></option>
-        <?php endforeach; ?>
-    </select>
-    <input type="hidden" name="action" value="show_select_pictures">
-    <input type="submit" value="Показати картинку">
+    <input type="hidden" name="action" value="go_to_selected_image">
+    <input type="submit" value="Вибрати картинку" name="submit">
 </form>
 
-<div>
-    <img src="<?=$picture?>">
-</div>
+
+
+<!--<form action="index.php" method="post">-->
+<!--    <select name="picture_name">-->
+<!--        --><?php //$all_images = select_unique_images() ?>
+<!--        --><?php //foreach ($all_images as $image) : ?>
+<!--            <option value="--><?//=$image?><!--">--><?//=basename($image)?><!--</option>-->
+<!--        --><?php //endforeach; ?>
+<!--    </select>-->
+<!--    <input type="hidden" name="action" value="show_select_pictures">-->
+<!--    <input type="submit" value="Показати картинку">-->
+<!--</form>-->
+<!---->
+<!--<div>-->
+<!--    <img src="--><?//=$picture?><!--">-->
+<!--</div>-->
 

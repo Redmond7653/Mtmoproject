@@ -81,7 +81,7 @@ function show_user_messages($user_id = NULL, $limit = 5) {
 
     $page = $page - 1;
     $offset = $page * $limit;
-    if ($user_message_array = $db->query("
+    if ($result = $db->query("
             SELECT * 
             FROM `messages`
             WHERE `user_id` = '{$user_id}' 
@@ -89,15 +89,34 @@ function show_user_messages($user_id = NULL, $limit = 5) {
             LIMIT {$offset}, {$limit}
             "
     )) {
-        $show_user_messages = $user_message_array->fetch_all(MYSQLI_ASSOC);
+        $user_message_rows = $result->fetch_all(MYSQLI_ASSOC);
     }
     db_error(__LINE__, $db);
 
 
     $user_messages = "<h2>Page ".($page+1)."</h2>";
-    foreach ($show_user_messages as $user_array) {
-        $user_messages .= "<div>".nl2br($user_array['message'])."</div><hr>";
+
+    foreach ($user_message_rows as $message_row) {
+        $user_messages .= "<div>".nl2br($message_row['message']);
+        // Генерація картинки початок
+        $message_id = $message_row['id'];
+        $images = '';
+
+        if ($images_result = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'")) {
+            $user_images_row = $images_result->fetch_all(MYSQLI_ASSOC);
+            foreach ($user_images_row as $images_row) {
+                $images .= "<img src='{$images_row['img']}'>";
+                $z = 0;
+            }
+        }
+        // Генерація картинки кінець
+        $user_messages .= "$images</div><hr><hr><hr>";
     }
+
+
+    // Отримати message id
+    // Витягнути всі строчкі з цим message id з табличкі images
+    // Перебрати всі строчкі і створити тег img з src="img"
 
     $db->close();
 

@@ -33,6 +33,7 @@ switch ($action) {
 
     case 'message':
         include 'scripts/message.php';
+        include 'scripts/upload.php';
         break;
 
     case 'change_pass':
@@ -58,7 +59,7 @@ switch ($action) {
 
     case 'show_select_pictures':
         $picture = $_POST['picture_name'];
-        include 'template/messages.html';
+        include 'template/select_picture.html';
         break;
 
     case 'upload_image':
@@ -67,6 +68,10 @@ switch ($action) {
 
     case 'go_to_upload_image':
         include 'template/upload_images.html';
+        break;
+
+    case 'go_to_selected_image':
+        include 'template/select_picture.html';
         break;
 
 

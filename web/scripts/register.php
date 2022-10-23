@@ -7,9 +7,11 @@ if (!isset($_POST['login'])) {
 
 
 
+
 $login = $_POST['login'] ?? '';
 $name = $_POST['name'] ?? '';
 $pass = $_POST['pass'] ?? '';
+
 
 if (!empty($_POST)) {
     $all_ok = TRUE;
