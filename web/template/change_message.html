@@ -1,0 +1,11 @@
+<form action="index.php" method="post">
+            <input type="hidden" name="action" value="edit_message">
+            <input type="hidden" name="id" value="<?=$test?>">
+            <textarea name="message" placeholder="Повідомлення"/></textarea>
+            <input type="submit" name="submit" value="Поміняти повідомлення">
+</form>
+
+<form action="index.php" method="post">
+    <input type="hidden" name="action" value="default">
+    <input type="submit" value="Повернутися" name="submit">
+</form>

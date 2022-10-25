@@ -110,7 +110,8 @@ function show_user_messages($user_id = NULL, $limit = 5) {
             }
         }
         // Генерація картинки кінець
-        $user_messages .= "$images</div><hr><hr><hr>";
+        $user_messages .= "$images</div><hr><hr><hr>"."<form action='index.php' method='post'><input type='hidden' name='action' value='change_user_message'><input type='hidden' name='message_id' value='$message_id'><input type='submit' value='Edit'></form>";
+
     }
 
 

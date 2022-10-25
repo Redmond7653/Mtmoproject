@@ -75,6 +75,15 @@ switch ($action) {
         break;
 
 
+    case 'change_user_message':
+        $test = $_REQUEST['message_id'];
+        include 'template/change_message.html';
+        break;
+
+    case 'edit_message':
+        include 'scripts/change_message.php';
+        break;
+
     default:
         if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {
             include 'template/custom_message.html';
