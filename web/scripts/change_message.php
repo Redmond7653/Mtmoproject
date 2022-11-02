@@ -1,12 +1,10 @@
 <?php
 
-$message = $_POST['message'];
-
-$test = $_REQUEST['id'];
 
 $db = db_connect();
 
-$change_message = $db->query("UPDATE `messages` SET `message` = '$message' WHERE `id` = '$test'");
+$change_message = $db->query("UPDATE `messages` SET `message` = '{$_POST['message']}' WHERE `id` = '{$_REQUEST['id']}'");
+
 
 
 $db->close();

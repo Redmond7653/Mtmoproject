@@ -76,7 +76,8 @@ switch ($action) {
 
 
     case 'change_user_message':
-        $test = $_REQUEST['message_id'];
+        $message_id = $_REQUEST['message_id'];
+        $user_message = $_REQUEST['user_message'];
         include 'template/change_message.html';
         break;
 

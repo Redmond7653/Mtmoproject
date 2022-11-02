@@ -61,12 +61,14 @@ function isset_form() {
     return isset($_REQUEST['Name']);
 }
 
-function show_user_messages($user_id = NULL, $limit = 5) {
-    
+function show_user_messages($user_id = NULL, $limit = 5)
+{
+
     if (!$user_id) {
         $user_id = $_SESSION['user']['id'];
     }
     
+
 
     $db = db_connect();
 
@@ -94,10 +96,10 @@ function show_user_messages($user_id = NULL, $limit = 5) {
     db_error(__LINE__, $db);
 
 
-    $user_messages = "<h2>Page ".($page+1)."</h2>";
+    $user_messages = "<h2>Page " . ($page + 1) . "</h2>";
 
     foreach ($user_message_rows as $message_row) {
-        $user_messages .= "<div>".nl2br($message_row['message']);
+        $user_messages .= "<div>" . nl2br($message_row['message']);
         // Генерація картинки початок
         $message_id = $message_row['id'];
         $images = '';
@@ -109,91 +111,102 @@ function show_user_messages($user_id = NULL, $limit = 5) {
                 $z = 0;
             }
         }
-        // Генерація картинки кінець
-        $user_messages .= "$images</div><hr><hr><hr>"."<form action='index.php' method='post'><input type='hidden' name='action' value='change_user_message'><input type='hidden' name='message_id' value='$message_id'><input type='submit' value='Edit'></form>";
+        if ($select_user_message_row = $db->query("SELECT * FROM `messages` WHERE `id` = '$message_id'")) {
+            $user_message_row_array = $select_user_message_row->fetch_assoc();
+            $user_message = $user_message_row_array['message'];
+        }
 
+            // Генерація картинки кінець
+            $user_messages .= "$images</div><hr><hr><hr>" . "<form action='index.php' method='post'><input type='hidden' name='action' value='change_user_message'>
+                                                                <input type='hidden' name='user_message' value='$user_message'>
+                                                                <input type='hidden' name='message_id' value='$message_id'>
+                                                                <input type='submit' value='Edit'>
+                                                            </form>";
+
+        }
+
+
+        // Отримати message id
+        // Витягнути всі строчкі з цим message id з табличкі images
+        // Перебрати всі строчкі і створити тег img з src="img"
+
+        $db->close();
+
+        return $user_messages;
     }
 
 
-    // Отримати message id
-    // Витягнути всі строчкі з цим message id з табличкі images
-    // Перебрати всі строчкі і створити тег img з src="img"
+    function get_pages_number($user_id = NULL, $limit = 5)
+    {
+        $page_number = get_messages_number($user_id) / $limit;
+        // @todo: return actual numbers of pages for this user
+        return $page_number;
+    }
 
-    $db->close();
-
-    return $user_messages;
-}
-
-
-function get_pages_number($user_id = NULL, $limit = 5) {
-    $page_number = get_messages_number($user_id)/$limit;
-    // @todo: return actual numbers of pages for this user
-    return $page_number;
-}
-
-function get_messages_number($user_id = NULL) {
-    $db = db_connect();
-    if ($user_message_array1 = $db->query("
+    function get_messages_number($user_id = NULL)
+    {
+        $db = db_connect();
+        if ($user_message_array1 = $db->query("
             SELECT COUNT(id) AS cnt
             FROM `messages` 
             WHERE `user_id` = '{$user_id}'
             "
-    )) {
-        $user_count_messages = $user_message_array1->fetch_array()[0];
+        )) {
+            $user_count_messages = $user_message_array1->fetch_array()[0];
+        }
+
+        $db->close();
+        return $user_count_messages;
     }
 
-    $db->close();
-    return $user_count_messages;
-}
+    function get_custom_message()
+    {
 
-function get_custom_message() {
-
-    if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {
-        $db = db_connect();
+        if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {
+            $db = db_connect();
 
 //        $id_number = $_POST['custom_message'] ?? $_GET['custom_message'] ?? FALSE;
-        $id_number = $_POST['custom_message'] ?? $_GET['custom_message'];
+            $id_number = $_POST['custom_message'] ?? $_GET['custom_message'];
 
 
+            $method = isset($_POST['custom_message']) ? "_POST_" : "_GET_";
 
-
-        $method = isset($_POST['custom_message']) ? "_POST_" : "_GET_";
-
-        if ($user_custom_message_array = $db->query("SELECT * FROM `messages` WHERE `id` = '$id_number'")) {
-            $custom_message_array = $user_custom_message_array->fetch_assoc();
-        }
-        $custom_message = "<h3>Message #{$custom_message_array['id']}, method {$method}</h3>";
-        $custom_message .= "<div>".$custom_message_array['message']."</div>";
-        $custom_message .= "<hr>";
+            if ($user_custom_message_array = $db->query("SELECT * FROM `messages` WHERE `id` = '$id_number'")) {
+                $custom_message_array = $user_custom_message_array->fetch_assoc();
+            }
+            $custom_message = "<h3>Message #{$custom_message_array['id']}, method {$method}</h3>";
+            $custom_message .= "<div>" . $custom_message_array['message'] . "</div>";
+            $custom_message .= "<hr>";
 
 
             $db->close();
-        return $custom_message;
+            return $custom_message;
 
-    }
-}
-
-function select_users_names() {
-    $db = db_connect();
-
-    $a = select_unique_authors();
-    if (empty($a)) {
-        $a = '0';
-    } else {
-        $a = implode(',', $a);
+        }
     }
 
-    // SELECT * FROM `users` WHERE id=250 OR id=251 OR id=252
-    if ($select_all_users_array = $db->query("SELECT * FROM `users` WHERE id IN ({$a})")) {
-        $select_users_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+    function select_users_names()
+    {
+        $db = db_connect();
+
+        $a = select_unique_authors();
+        if (empty($a)) {
+            $a = '0';
+        } else {
+            $a = implode(',', $a);
+        }
+
+        // SELECT * FROM `users` WHERE id=250 OR id=251 OR id=252
+        if ($select_all_users_array = $db->query("SELECT * FROM `users` WHERE id IN ({$a})")) {
+            $select_users_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+        }
+        $select_user_names = [];
+        foreach ($select_users_array as $select_custom_users_array) {
+            $select_user_names[$select_custom_users_array['id']] = $select_custom_users_array['name'];
+        }
+        $db->close();
+        return $select_user_names;
     }
-    $select_user_names = [];
-    foreach ($select_users_array as $select_custom_users_array) {
-        $select_user_names[$select_custom_users_array['id']] = $select_custom_users_array['name'];
-    }
-    $db->close();
-    return $select_user_names;
-}
 
 //function select_users_id()
 //{
@@ -218,33 +231,36 @@ function select_users_names() {
 //   return $select_user_id;
 //}
 
-function select_unique_authors() {
-    $db = db_connect();
+    function select_unique_authors()
+    {
+        $db = db_connect();
 
-    if ($select_all_users_array = $db->query("SELECT DISTINCT `user_id` FROM `messages` ")) {
-        $select_users_id_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+        if ($select_all_users_array = $db->query("SELECT DISTINCT `user_id` FROM `messages` ")) {
+            $select_users_id_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+        }
+        $select_user_names = [];
+        foreach ($select_users_id_array as $select_custom_users_array) {
+            $select_user_names[] = $select_custom_users_array['user_id'];
+        }
+        $db->close();
+        return $select_user_names;
     }
-    $select_user_names = [];
-    foreach ($select_users_id_array as $select_custom_users_array) {
-        $select_user_names[] = $select_custom_users_array['user_id'];
-    }
-    $db->close();
-    return $select_user_names;
-}
 
-function select_unique_images() {
-    $db = db_connect();
+    function select_unique_images()
+    {
+        $db = db_connect();
 
-    if ($select_all_users_array = $db->query("SELECT * FROM `images` WHERE `ID`  ")) {
-        $select_images_id_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+        if ($select_all_users_array = $db->query("SELECT * FROM `images` WHERE `ID`  ")) {
+            $select_images_id_array = $select_all_users_array->fetch_all(MYSQLI_ASSOC);
+        }
+        $select_images_names = [];
+        foreach ($select_images_id_array as $select_custom_images_array) {
+            $select_images_names[$select_custom_images_array['name']] = $select_custom_images_array['img'];
+        }
+        $db->close();
+        return $select_images_names;
     }
-    $select_images_names = [];
-    foreach ($select_images_id_array as $select_custom_images_array) {
-        $select_images_names[$select_custom_images_array['name']] = $select_custom_images_array['img'];
-    }
-    $db->close();
-    return $select_images_names;
-}
+
 
 //function show_unique_images() {
 //    $db = db_connect();
@@ -260,4 +276,39 @@ function select_unique_images() {
 //    return $select_images_names;
 //}
 
+//function edit_user_message() {
+//
+//    $db = db_connect();
+//
+//    if ($select_user_message_row = $db->query("SELECT * FROM `messages` WHERE `id` = '$message_id'")) {
+//        $user_message_row_array = $select_user_message_row->fetch_assoc();
+//        $current_user_message = $user_message_row_array['message'];
+//        $db->close();
+//        return $current_user_message;
+//    }
+//}
 
+//function edit_user_image() {
+//
+//    $db = db_connect();
+//
+//    if ($table_img = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'")) {
+//        $change_img = $table_img->fetch_all(MYSQLI_ASSOC);
+//        foreach ($change_img as $image_rows) {
+//            $image = $image_rows['img'];
+//        }
+//    }
+//}
+
+function edit_user_image($image = NULL) {
+
+    $db = db_connect();
+
+    if ($table_img = $db->query("SELECT * FROM `images` WHERE `message_id` = '{$_REQUEST['message_id']}'")) {
+        $change_img = $table_img->fetch_all(MYSQLI_ASSOC);
+        foreach ($change_img as $image_rows) {
+            $image .= "<img src='{$image_rows['img']}'>";
+        }
+    }
+    return $image;
+}
