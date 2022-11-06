@@ -36,6 +36,7 @@ switch ($action) {
         include 'scripts/upload.php';
         break;
 
+
     case 'change_pass':
         include 'scripts/change_pass.php';
         break;
@@ -83,6 +84,13 @@ switch ($action) {
 
     case 'edit_message':
         include 'scripts/change_message.php';
+        include 'scripts/upload_img.php';
+        break;
+
+    case 'delete_img':
+        $user_message_id = $_REQUEST['message_id'];
+        $user_message_image = $_REQUEST['message_img'];
+        include 'scripts/delete_img.php';
         break;
 
     default:

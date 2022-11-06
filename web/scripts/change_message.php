@@ -9,4 +9,4 @@ $change_message = $db->query("UPDATE `messages` SET `message` = '{$_POST['messag
 
 $db->close();
 
-include 'template/change_message.html';
+include 'template/messages.html';

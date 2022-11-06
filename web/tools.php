@@ -117,7 +117,8 @@ function show_user_messages($user_id = NULL, $limit = 5)
         }
 
             // Генерація картинки кінець
-            $user_messages .= "$images</div><hr><hr><hr>" . "<form action='index.php' method='post'><input type='hidden' name='action' value='change_user_message'>
+            $user_messages .= "$images</div><hr><hr><hr>" . "<form action='index.php' method='post'>
+                                                                <input type='hidden' name='action' value='change_user_message'>
                                                                 <input type='hidden' name='user_message' value='$user_message'>
                                                                 <input type='hidden' name='message_id' value='$message_id'>
                                                                 <input type='submit' value='Edit'>
@@ -300,14 +301,22 @@ function show_user_messages($user_id = NULL, $limit = 5)
 //    }
 //}
 
-function edit_user_image($image = NULL) {
+function edit_user_image() {
 
     $db = db_connect();
 
+    $image = '';
+    $message_id = $_REQUEST['message_id'];
     if ($table_img = $db->query("SELECT * FROM `images` WHERE `message_id` = '{$_REQUEST['message_id']}'")) {
         $change_img = $table_img->fetch_all(MYSQLI_ASSOC);
         foreach ($change_img as $image_rows) {
-            $image .= "<img src='{$image_rows['img']}'>";
+            $user_image = $image_rows['img'];
+            $image .= "<img src='{$image_rows['img']}'>". "<form action='index.php' method='post'>
+                                                                <input type='hidden' name='action' value='delete_img'>
+                                                                <input type='hidden' name='message_id' value='$message_id'>
+                                                                <input type='hidden' name='message_img' value='$user_image'>
+                                                                <input type='submit' value='X'>
+                                                            </form>" ;
         }
     }
     return $image;
