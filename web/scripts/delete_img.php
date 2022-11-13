@@ -14,4 +14,15 @@ $delete_img = $db->query($q);
 
 $db->close();
 
-include 'template/change_message.html';
+//include 'template/change_message.html';
+$_SESSION['render'][] = [
+    '#template' => 'change_message',
+    '#data' => [
+        // todo: $message_id, $user_message are undefined
+        'message_id' => $message_id,
+        'user_message' => $user_message,
+        // todo: wrong function naming
+        'user_images' => edit_user_image(),
+    ],
+
+];

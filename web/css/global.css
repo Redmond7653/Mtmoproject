@@ -1,17 +1,24 @@
-.error {
-    font-size: 0.8em;
-    color: red;
+
+body {
+    background-color: #00bcd440;
 }
-.table {
-    display: table;
-}
-.table-row {
-    display: table-row;
-}
-.table-cell {
-    display: table-cell;
+
+.user_message {
     padding: 5px;
 }
-.pointers {
-    color: blue;
+
+.user_img {
+    display: inline-block;
+    max-width: 200px;
+    max-height: 200px;
+    padding: 10px;
+}
+
+.user_img img {
+    max-width: 100%; height:auto;
+    border: solid 2px;
+}
+
+.user_message_field {
+    background-color: #ffeb3b33;
 }

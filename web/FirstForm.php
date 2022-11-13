@@ -1,7 +1,7 @@
 <?php
     echo 'Напишіть свої дані';
     include 'tools.php';
-    include 'template/_header.htm';
+    include 'template/_header.html';
 
 
 
@@ -35,4 +35,4 @@
 
 include 'template/main_page_form.htm';
 
-include 'template/_footer.htm';
+include 'template/_footer.html';

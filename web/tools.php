@@ -99,7 +99,7 @@ function show_user_messages($user_id = NULL, $limit = 5)
     $user_messages = "<h2>Page " . ($page + 1) . "</h2>";
 
     foreach ($user_message_rows as $message_row) {
-        $user_messages .= "<div>" . nl2br($message_row['message']);
+        $user_messages .= "<div class='user_message_field'><div>" . "<div class='user_message'>".nl2br($message_row['message'])."</div>";
         // Генерація картинки початок
         $message_id = $message_row['id'];
         $images = '';
@@ -107,22 +107,23 @@ function show_user_messages($user_id = NULL, $limit = 5)
         if ($images_result = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'")) {
             $user_images_row = $images_result->fetch_all(MYSQLI_ASSOC);
             foreach ($user_images_row as $images_row) {
-                $images .= "<img src='{$images_row['img']}'>";
-                $z = 0;
+//                $images .= "<div class='user_img'><img src='{$images_row['img']}'></div>";
+                $images .= get_template('messages_image', $images_row);
+
             }
         }
+
+
         if ($select_user_message_row = $db->query("SELECT * FROM `messages` WHERE `id` = '$message_id'")) {
             $user_message_row_array = $select_user_message_row->fetch_assoc();
             $user_message = $user_message_row_array['message'];
         }
 
+        $edit_message = get_template('message_edit_form', ['um' => $user_message, 'message_id' => $message_id]);
+
             // Генерація картинки кінець
-            $user_messages .= "$images</div><hr><hr><hr>" . "<form action='index.php' method='post'>
-                                                                <input type='hidden' name='action' value='change_user_message'>
-                                                                <input type='hidden' name='user_message' value='$user_message'>
-                                                                <input type='hidden' name='message_id' value='$message_id'>
-                                                                <input type='submit' value='Edit'>
-                                                            </form>";
+            $user_messages .= "$images</div>" . $edit_message;
+
 
         }
 
@@ -134,6 +135,15 @@ function show_user_messages($user_id = NULL, $limit = 5)
         $db->close();
 
         return $user_messages;
+    }
+
+    function show_user_images($user_id = NULL) {
+        if (!$user_id) {
+            $user_id = $_SESSION['user']['id'];
+        }
+
+
+
     }
 
 
@@ -320,4 +330,37 @@ function edit_user_image() {
         }
     }
     return $image;
+}
+
+function render_page() {
+    if (!isset($_SESSION['render']) || !is_array($_SESSION['render'])) {
+        echo '$_SESSION["render"] is not and render array!';
+        return;
+    }
+    foreach ($_SESSION['render'] as $key => $element) {
+        if (!isset($element['#weight'])) {
+            $_SESSION['render'][$key]['#weight'] = 0;
+        }
+    }
+    // todo: enforce sort by '#weight'
+
+    foreach ($_SESSION['render'] as $element) {
+        $template = $element['#template'] ?? '';
+        if (!isset($element['#data'])) {
+            $element['#data'] = '';
+        }
+        echo get_template($template, $element['#data']);
+    }
+
+}
+
+function get_template($template, $data) {
+    $content = '';
+    $template = "template/{$template}.html";
+    if (file_exists($template)) {
+        ob_start();
+        include $template;
+        $content = ob_get_clean();
+    }
+    return $content;
 }

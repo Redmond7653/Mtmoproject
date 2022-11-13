@@ -68,13 +68,20 @@ if (isset($_POST['new_pass'])) { // /* form_CHANGE_PASS_is_sent*/
 
 
         if ($pass_changed) {
-            include 'template/password_saving_confirmed.html';
+//            include 'template/password_saving_confirmed.html';
+            $_SESSION['render'][] = [
+                '#template' => 'password_saving_confirmed',
+            ];
+
 
         }
     }
 }
 else {
-    include 'template/change_pass.html';
+//    include 'template/change_pass.html';
+    $_SESSION['render'][] = [
+        '#template' => 'change_pass',
+    ];
 }
 
 

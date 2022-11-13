@@ -1,12 +1,12 @@
 <form action="index.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action" value="edit_message">
-            <input type="hidden" name="id" value="<?=$message_id?>">
-            <textarea name="message" placeholder="Повідомлення"/><?=$user_message?></textarea>
+            <input type="hidden" name="id" value="<?=$data['message_id']?>">
+            <textarea name="message" placeholder="Повідомлення"/><?=$data['user_message'] ?? ''?></textarea>
             <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
             <input type="submit" name="submit" value="Поміняти повідомлення">
 </form>
 
-<div><?=edit_user_image()?></div>
+<div><?=$data['user_images'] ?? ''?></div>
 
 <form action="index.php" method="post">
     <input type="hidden" name="action" value="default">

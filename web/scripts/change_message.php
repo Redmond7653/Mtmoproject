@@ -9,4 +9,11 @@ $change_message = $db->query("UPDATE `messages` SET `message` = '{$_POST['messag
 
 $db->close();
 
-include 'template/messages.html';
+//include 'template/messages.html';
+$_SESSION['render'][] = [
+    '#template' => 'messages',
+    '#data' => [
+        'user_messages' => show_user_messages($_SESSION['user']['id']),
+    ],
+    '#weight' => 0,
+];

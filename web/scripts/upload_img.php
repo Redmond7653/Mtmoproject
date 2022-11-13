@@ -5,7 +5,7 @@ $user_dir = $_SESSION['user']['id'];
 $target_dir = "images/". $user_dir. "/";
 $target_dir1 = "images/";
 
-foreach ($_FILES["fileToUpload"]["name"] as $key=>$fileUploadedName) {
+foreach ($_FILES["fileToUpload"]["name"] as $key => $fileUploadedName) {
 
     $target_file = $target_dir1 . basename($fileUploadedName);
     $uploadOk = 1;
@@ -58,6 +58,16 @@ foreach ($_FILES["fileToUpload"]["name"] as $key=>$fileUploadedName) {
 
         // Муваю файл в images/250
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"][$key], $target_dir . $target_file)) {
+            $path_image = "/". $target_dir . $target_file;
+
+            $db = db_connect();
+
+            $message_id = $_REQUEST['id'];
+
+            $all_images_array = $db->query("INSERT INTO `images` (`img`, `message_id`) VALUES ('$path_image', '$message_id')" );
+
+            $db->close();
+
             echo "The file " . htmlspecialchars(basename($fileUploadedName)) . " has been uploaded.";
         } else {
             echo "Sorry, there was an error uploading your file.";
@@ -65,15 +75,15 @@ foreach ($_FILES["fileToUpload"]["name"] as $key=>$fileUploadedName) {
 
     }
 
-    $path_image = "/". $target_dir . $target_file;
-
-    $db = db_connect();
-
-    $message_id = $_REQUEST['id'];
-
-    $all_images_array = $db->query("INSERT INTO `images` (`img`, `message_id`) VALUES ('$path_image', '$message_id')" );
-
-    $db->close();
+//    $path_image = "/". $target_dir . $target_file;
+//
+//    $db = db_connect();
+//
+//    $message_id = $_REQUEST['id'];
+//
+//    $all_images_array = $db->query("INSERT INTO `images` (`img`, `message_id`) VALUES ('$path_image', '$message_id')" );
+//
+//    $db->close();
 
 }
 //    $pic_directory = $_SESSION['user']['id'];

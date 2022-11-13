@@ -1,7 +1,11 @@
 <?php
 
 if (!isset($_POST['login'])) {
-   include 'template/register.html';
+//   include 'template/register.html';
+    $_SESSION['render'][] = [
+        '#template' => 'register',
+    ];
+
     return;
 }
 
@@ -53,4 +57,7 @@ if ($result = $db->query("SELECT * FROM `users` WHERE `login` = '$login'")) {
 
 $db->close();
 
-include 'template/auth.html';
+//include 'template/auth.html';
+$_SESSION['render'][] = [
+    '#template' => 'auth',
+];

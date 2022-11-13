@@ -49,4 +49,9 @@ $_SESSION['user'] = $user;
 
 $db->close();
 
-include 'template/messages.html';
+$_SESSION['render'][] = [
+    '#template' => 'messages',
+    '#data' => [
+        'user_messages' => show_user_messages($_SESSION['user']['id']),
+    ],
+];
