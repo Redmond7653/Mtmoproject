@@ -321,12 +321,12 @@ function edit_user_image() {
         $change_img = $table_img->fetch_all(MYSQLI_ASSOC);
         foreach ($change_img as $image_rows) {
             $user_image = $image_rows['img'];
-            $image .= "<img src='{$image_rows['img']}'>". "<form action='index.php' method='post'>
+            $image .= "<img src='{$image_rows['img']}'>". "<form action='index1.php' method='post'>
                                                                 <input type='hidden' name='action' value='delete_img'>
                                                                 <input type='hidden' name='message_id' value='$message_id'>
                                                                 <input type='hidden' name='message_img' value='$user_image'>
                                                                 <input type='submit' value='X'>
-                                                            </form>" ;
+                                                            </form>";
         }
     }
     return $image;
@@ -364,3 +364,4 @@ function get_template($template, $data) {
     }
     return $content;
 }
+

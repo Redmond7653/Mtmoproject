@@ -1,167 +1,123 @@
 <?php
-session_start();
-$_SESSION['render'] = [];
-$_SESSION['render'][] = [
-    '#template' => '_header',
-    '#weight' => 0,
-];
+error_reporting (E_ALL ^ E_NOTICE);
+set_time_limit(0);
 
-unset($_SESSION['show_user_message']);
+include 'template/_headermtmo.htm';
 
-if (isset($_SESSION['count'])) {
-    $_SESSION['count']++;
-} else {
-    $_SESSION['count'] = 1;
-}
+### do not forget to do 'composer require box/spout'
 
-include 'settings.php';
-include 'tools.php';
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 
+require_once 'autoload.php';
+require_once 'tools.php';
 
-$action = NULL;
-if (!empty($_POST['action'])) {
-    $action = $_POST['action'];
-}
+$file = 'data1.xlsx';
+$rows_max = 3;
+$rows_count = 0;
 
-switch ($action) {
-    case 'register':
-        include 'scripts/register.php';
-        break;
-
-    case 'login':
-        include 'scripts/auth.php';
-        break;
-
-    case 'logout':
-        include 'scripts/logout.php';
-        break;
-
-    case 'message':
-        include 'scripts/message.php';
-        include 'scripts/upload.php';
-        break;
+# open the file
+$reader = ReaderEntityFactory::createXLSXReader();
+$listServices = [];
+$listDoctorNames = [];
+$reader->open($file);
+# read each cell of each row of each sheet
 
 
-    case 'change_pass':
-        include 'scripts/change_pass.php';
-        break;
+foreach ($reader->getSheetIterator() as $sheet) {
+    $rows_count++;
+//    echo "<br>\n============================ ROW {$rows_count} =======================<br>\n";
 
-    case 'confirm_password':
-        include "scripts/confirm_pass.php";
-        break;
+    if ($sheet->getIndex() === 0) {
 
-    case 'show_user_message':
-//        include 'template/messages.html';
-        $_SESSION['render'][] = [
-            '#template' => 'messages',
-            '#data' => [
-                'user_messages' => show_user_messages($_SESSION['user']['id']),
-            ],
-            '#weight' => 0,
-        ];
-        break;
+        $table_rows = [];
+        $table_header = [];
+        foreach ($sheet->getRowIterator() as $rowKey => $row) {
+            if ($rowKey > 3) {
+                $tmp_cells = [];
+                foreach ($row->getCells() as $cell) {
 
-    case 'chosen_user_message':
-        $_SESSION['show_user_message'] = $_POST['user_id'];
-//        include 'template/chosen_user_message.html';
-        $_SESSION['render'][] = [
-            '#template' => 'chosen_user_message',
-        ];
-        break;
+                    // Check if cell is date to prevent convert error.
+                    $tmp_cells[] = $cell->isDate() ? $cell->getValue()->format('Y-m-d H:i') : $cell->getValue();
 
-    case 'show_custom_message':
-//        include 'template/show_custom_message.html';
-        $_SESSION['render'][] = [
-            '#template' => 'show_custom_message',
-        ];
-        break;
+                        $doctorName = $tmp_cells[33];
+                        $services = $tmp_cells[54];
+                        $services = explode(',', $services);
 
-    case 'show_select_pictures':
-        $picture = $_POST['picture_name'];
-//        include 'template/select_picture.html';
-        $_SESSION['render'][] = [
-            '#template' => 'select_picture',
-        ];
-        break;
-
-    case 'upload_image':
-        include 'scripts/upload.php';
-        break;
-
-    case 'go_to_upload_image':
-//        include 'template/upload_images.html';
-        $_SESSION['render'][] = [
-            '#template' => 'upload_images',
-        ];
-        break;
-
-    case 'go_to_selected_image':
-//        include 'template/select_picture.html';
-        $_SESSION['render'][] = [
-            '#template' => 'select_picture',
-        ];
-        break;
+                        $found = false;
+                        foreach ($services as $number_of_service) {
+                            $check = '9.';
+                            $pos = strpos($number_of_service, $check);
+                            if ($pos === 0) {
+                                $tableColumns[$number_of_service] = $number_of_service;
+                                $data[$doctorName][$number_of_service] = $data[$doctorName][$number_of_service] + 1;
+                                $found = true;
+                            }
+                        }
 
 
-    case 'change_user_message':
-//        $message_id = $_REQUEST['message_id'];
-//        $user_message = $_REQUEST['user_message'];
-//        include 'template/change_message.html';
-        $_SESSION['render'][] = [
-            '#template' => 'change_message',
-            '#data' => [
-                'message_id' => $_REQUEST['message_id'],
-                'user_message' => $_REQUEST['user_message'],
-                // todo: wrong function naming
-                'user_images' => edit_user_image(),
-            ],
 
-        ];
 
-        break;
 
-    case 'edit_message':
-        include 'scripts/change_message.php';
-        include 'scripts/upload_img.php';
-        break;
+                }
+                $table_rows[] = $tmp_cells;
+            }
+//            if ($rowKey > 250) {
+//                break;
+//            }
+            if ($rowKey == 3) {
+                $tmp_cells = [];
+                foreach ($row->getCells() as $cell) {
 
-    case 'delete_img':
-        $user_message_id = $_REQUEST['message_id'];
-        $user_message_image = $_REQUEST['message_img'];
-        include 'scripts/delete_img.php';
-        break;
+                    // Check if cell is date to prevent convert error.
+                    $tmp_cells[] = $cell->isDate() ? $cell->getValue()->format('Y-m-d H:i') : $cell->getValue();
 
-    default:
-        if (isset($_GET['custom_message']) || isset($_POST['custom_message'])) {
-//            include 'template/custom_message.html';
-            $_SESSION['render'][] = [
-                '#template' => 'custom_message',
-            ];
-
-            break;
-        }
-        if (!empty($_SESSION['user'])) {
-//            include 'template/messages.html';
-            $_SESSION['render'][] = [
-                '#template' => 'messages',
-                '#data' => [
-                    'user_messages' => show_user_messages($_SESSION['user']['id']),
-                ],
-                '#weight' => 0,
-            ];
-        }
-        if (empty($_SESSION['user'])) {
-//            include 'template/auth.html';
-            $_SESSION['render'][] = [
-                '#template' => 'auth',
-            ];
+                }
+                $table_header = $tmp_cells;
+            }
         }
 
+//        foreach ($sheet->getRowIterator() as $rowKey => $row) {
+//            if ($rowKey === 24) {
+//                $data = [];
+//                foreach ($row->getCells() as $cellKey => $cell) {
+//                    if ($cellKey <= 33) {
+//                        $data[] = $cell->getValue();
+//                    }
+//                }
+//                echo "<pre>";
+//                var_export($data);
+//                echo "</pre>";
+//                break;
+//            }
+//
+//        }
+    }
+    if ($rows_count > $rows_max) {
+        break;
+    }
 }
 
-$_SESSION['render'][] = [
-    '#template' => '_footer',
-    '#weight' => 0,
-];
 
-render_page();
+foreach($data as $key_doctorName=>$value_services) {
+    echo $key_doctorName . " ";
+    foreach($value_services as $key_serviceName=>$value_count) {
+        echo $key_serviceName . " - ". $value_count . " ";
+    }
+    echo "<br>";
+}
+
+include 'template/table.htm';
+
+include 'template/_footermtmo.htm';
+
+# close the file
+$reader->close();
+
+
+//$var = $value ? $value : "Другое значение";
+//
+//if ($value) {
+//    $var = $value;
+//} else {
+//    $var = "Другое значение";
+//}
