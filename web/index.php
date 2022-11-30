@@ -1,4 +1,8 @@
 <?php
+
+include 'Classes/PHPExcel.php';
+include 'Classes/PHPExcel/Writer/Excel2007.php';
+
 error_reporting (E_ALL ^ E_NOTICE);
 set_time_limit(0);
 
@@ -61,9 +65,9 @@ foreach ($reader->getSheetIterator() as $sheet) {
                 }
                 $table_rows[] = $tmp_cells;
             }
-//            if ($rowKey > 250) {
-//                break;
-//            }
+            if ($rowKey > 250) {
+                break;
+            }
             if ($rowKey == 3) {
                 $tmp_cells = [];
                 foreach ($row->getCells() as $cell) {
@@ -105,6 +109,20 @@ foreach($data as $key_doctorName=>$value_services) {
     }
     echo "<br>";
 }
+
+
+
+
+
+$xls = new PHPExcel();
+$xls->setActiveSheetIndex(0);
+$sheet = $xls->getActiveSheet();
+
+$sheet->setCellValue("A1", 'Лікар, що створив взаємодію');
+
+for ($i = 'B'; $i <= count($tableColumns); $i++) {
+$sheet->setCellValue("{$i}1", sort($tableColumns));
+    }
 
 include 'template/table.htm';
 
