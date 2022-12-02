@@ -1,7 +1,7 @@
 <?php
 
-include 'Classes/PHPExcel.php';
-include 'Classes/PHPExcel/Writer/Excel2007.php';
+//include 'Classes/PHPExcel.php';
+//include 'Classes/PHPExcel/Writer/Excel2007.php';
 
 error_reporting (E_ALL ^ E_NOTICE);
 set_time_limit(0);
@@ -11,6 +11,10 @@ include 'template/_headermtmo.htm';
 ### do not forget to do 'composer require box/spout'
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Common\Entity\Style\Color;
+use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 
 require_once 'autoload.php';
 require_once 'tools.php';
@@ -21,6 +25,7 @@ $rows_count = 0;
 
 # open the file
 $reader = ReaderEntityFactory::createXLSXReader();
+$writer = WriterEntityFactory::createXLSXWriter();
 $listServices = [];
 $listDoctorNames = [];
 $reader->open($file);
@@ -35,6 +40,7 @@ foreach ($reader->getSheetIterator() as $sheet) {
 
         $table_rows = [];
         $table_header = [];
+        $data = [];
         foreach ($sheet->getRowIterator() as $rowKey => $row) {
             if ($rowKey > 3) {
                 $tmp_cells = [];
@@ -68,6 +74,7 @@ foreach ($reader->getSheetIterator() as $sheet) {
             if ($rowKey > 250) {
                 break;
             }
+
             if ($rowKey == 3) {
                 $tmp_cells = [];
                 foreach ($row->getCells() as $cell) {
@@ -102,27 +109,117 @@ foreach ($reader->getSheetIterator() as $sheet) {
 }
 
 
-foreach($data as $key_doctorName=>$value_services) {
-    echo $key_doctorName . " ";
-    foreach($value_services as $key_serviceName=>$value_count) {
-        echo $key_serviceName . " - ". $value_count . " ";
-    }
-    echo "<br>";
+//foreach($data as $key_doctorName=>$value_services) {
+//    echo $key_doctorName . " ";
+//    foreach($value_services as $key_serviceName=>$value_count) {
+//        echo $key_serviceName . " - ". $value_count . " ";
+//    }
+//    echo "<br>";
+//}
+
+
+
+
+
+
+$writer = WriterEntityFactory::createXLSXWriter();
+// $writer = WriterEntityFactory::createODSWriter();
+// $writer = WriterEntityFactory::createCSVWriter();
+
+$writer->openToFile("test.xlsx"); // write data to a file or to a PHP stream
+//$writer->openToBrowser($fileName); // stream data directly to the browser
+
+
+//$cells = [
+//    WriterEntityFactory::createCell('Лікар, що створив взаємодію'),
+//];
+//foreach ($tableColumns as $tableColumn) {
+//    $cells[] = WriterEntityFactory::createCell($tableColumn);
+//}
+//$singleRow = WriterEntityFactory::createRow($cells);
+//$writer->addRow($singleRow);
+
+
+//Створити дві строкі, в першій строці сирі несортовані дані, в другій строці ті самі сортовані дані
+
+$zebraBlackStyle = (new StyleBuilder())
+    ->setBackgroundColor(Color::GREEN)
+    ->setFontColor(Color::WHITE)
+    ->setFontSize(12)
+    ->setCellAlignment('center')
+    ->build();
+
+$zebraWhiteStyle = (new StyleBuilder())
+    ->setBackgroundColor(Color::BLUE)
+    ->setFontColor(Color::WHITE)
+    ->setFontSize(12)
+    ->setCellAlignment('center')
+    ->build();
+
+
+$cells = [
+    WriterEntityFactory::createCell('Лікар, що створив взаємодію', $zebraWhiteStyle),
+];
+
+//foreach ($tableColumns as $key=>$value) {
+//    $tableColumns[$key] = (float) $tableColumns[$key];
+//}
+
+natsort($tableColumns);
+
+
+foreach ($tableColumns as $tableColumn) {
+    $cells[] = WriterEntityFactory::createCell($tableColumn, $zebraBlackStyle);
 }
+$singleRow = WriterEntityFactory::createRow($cells);
+$writer->addRow($singleRow);
 
 
-
-
-
-$xls = new PHPExcel();
-$xls->setActiveSheetIndex(0);
-$sheet = $xls->getActiveSheet();
-
-$sheet->setCellValue("A1", 'Лікар, що створив взаємодію');
-
-for ($i = 'B'; $i <= count($tableColumns); $i++) {
-$sheet->setCellValue("{$i}1", sort($tableColumns));
+$doctor_services = [];
+foreach($data as $key_doctorName=>$value_services) {
+    $doctor_services = [WriterEntityFactory::createCell($key_doctorName)];
+    foreach($tableColumns as $col) {
+        if (isset($value_services[(string)$col])) {
+            $doctor_services[] = WriterEntityFactory::createCell($value_services[(string)$col]);
+//            $doctor_services[] = WriterEntityFactory::createCell((string)$col);
+            $doctor_name[] = WriterEntityFactory::createCell($key_doctorName);
+        } else {
+            $doctor_services[] = WriterEntityFactory::createCell('');
+        }
     }
+    $doctorRow = WriterEntityFactory::createRow($doctor_services);
+    $writer->addRow($doctorRow);
+}
+//$doctorRow = WriterEntityFactory::createRow($doctor_services);
+//$writer->addRow($doctorRow);
+
+
+
+
+/** add multiple rows at a time */
+//$multipleRows = [
+//    WriterEntityFactory::createRow($cells),
+//    WriterEntityFactory::createRow($cells),
+//];
+//$writer->addRows($multipleRows);
+
+///** Shortcut: add a row from an array of values */
+//$values = ['Carl', 'is', 'great!'];
+//$rowFromValues = WriterEntityFactory::createRowFromArray($values);
+//$writer->addRow($rowFromValues);
+
+$writer->close();
+
+
+//$xls = new PHPExcel();
+//$xls->setActiveSheetIndex(0);
+//$sheet = $xls->getActiveSheet();
+//
+//$sheet->setCellValue("A1", 'Лікар, що створив взаємодію');
+//
+//for ($i = 'B'; $i <= count($tableColumns); $i++) {
+//$sheet->setCellValue("{$i}1", sort($tableColumns));
+//    }
 
 include 'template/table.htm';
 
