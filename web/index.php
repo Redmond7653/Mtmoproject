@@ -171,11 +171,30 @@ natsort($tableColumns);
 foreach ($tableColumns as $tableColumn) {
     $cells[] = WriterEntityFactory::createCell($tableColumn, $zebraBlackStyle);
 }
+$cells[] = WriterEntityFactory::createCell('Всього', $zebraBlackStyle);
+$cells[] = WriterEntityFactory::createCell('0.05', $zebraBlackStyle);
 $singleRow = WriterEntityFactory::createRow($cells);
 $writer->addRow($singleRow);
 
 
 $doctor_services = [];
+$sum = 0;
+$koef = [
+    '9.1' => 2,
+    '9.2' => 3,
+    '9.3' => 3,
+    '9.4' => 4,
+    '9.5' => 5,
+    '9.6' => 6,
+    '9.7' => 7,
+    '9.8' => 8,
+    '9.9' => 9,
+    '9.10' => 10,
+    '9.11' => 11,
+
+];
+//$test = '1';
+//$test1 = '2';
 foreach($data as $key_doctorName=>$value_services) {
     $doctor_services = [WriterEntityFactory::createCell($key_doctorName)];
     foreach($tableColumns as $col) {
@@ -183,10 +202,15 @@ foreach($data as $key_doctorName=>$value_services) {
             $doctor_services[] = WriterEntityFactory::createCell($value_services[(string)$col]);
 //            $doctor_services[] = WriterEntityFactory::createCell((string)$col);
             $doctor_name[] = WriterEntityFactory::createCell($key_doctorName);
+            $sum = $sum + $value_services[$col] * ($koef[$col] ?? 0);
+
+            $small_part_of_sum = $sum * 0.05;
         } else {
             $doctor_services[] = WriterEntityFactory::createCell('');
         }
     }
+    $doctor_services[] = WriterEntityFactory::createCell($sum);
+    $doctor_services[] = WriterEntityFactory::createCell($small_part_of_sum);
     $doctorRow = WriterEntityFactory::createRow($doctor_services);
     $writer->addRow($doctorRow);
 }
