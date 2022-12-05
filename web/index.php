@@ -19,7 +19,7 @@ use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 require_once 'autoload.php';
 require_once 'tools.php';
 
-$file = 'data1.xlsx';
+$file = 'testing.xlsx';
 $rows_max = 3;
 $rows_count = 0;
 
@@ -53,17 +53,21 @@ foreach ($reader->getSheetIterator() as $sheet) {
                         $services = $tmp_cells[54];
                         $services = explode(',', $services);
 
-                        $found = false;
-                        foreach ($services as $number_of_service) {
-                            $check = '9.';
-                            $pos = strpos($number_of_service, $check);
-                            if ($pos === 0) {
-                                $tableColumns[$number_of_service] = $number_of_service;
-                                $data[$doctorName][$number_of_service] = $data[$doctorName][$number_of_service] + 1;
-                                $found = true;
+
+                        if ($tmp_cells[55]) {
+                            break;
+                        } else {
+                            $found = false;
+                            foreach ($services as $number_of_service) {
+                                $check = '9.';
+                                $pos = strpos($number_of_service, $check);
+                                if ($pos === 0) {
+                                    $tableColumns[$number_of_service] = $number_of_service;
+                                    $data[$doctorName][$number_of_service] = $data[$doctorName][$number_of_service] + 1;
+                                    $found = true;
+                                }
                             }
                         }
-
 
 
 
@@ -71,9 +75,9 @@ foreach ($reader->getSheetIterator() as $sheet) {
                 }
                 $table_rows[] = $tmp_cells;
             }
-            if ($rowKey > 250) {
-                break;
-            }
+//            if ($rowKey > 250) {
+//                break;
+//            }
 
             if ($rowKey == 3) {
                 $tmp_cells = [];
@@ -157,6 +161,15 @@ $zebraWhiteStyle = (new StyleBuilder())
     ->build();
 
 
+$sumStyle = (new StyleBuilder())
+    ->setBackgroundColor(Color::BLUE)
+    ->setFontColor(Color::WHITE)
+    ->setFontSize(12)
+    ->setFontBold()
+    ->setCellAlignment('center')
+    ->build();
+
+
 $cells = [
     WriterEntityFactory::createCell('Лікар, що створив взаємодію', $zebraWhiteStyle),
 ];
@@ -180,17 +193,17 @@ $writer->addRow($singleRow);
 $doctor_services = [];
 $sum = 0;
 $koef = [
-    '9.1' => 2,
-    '9.2' => 3,
-    '9.3' => 3,
-    '9.4' => 4,
-    '9.5' => 5,
-    '9.6' => 6,
-    '9.7' => 7,
-    '9.8' => 8,
-    '9.9' => 9,
-    '9.10' => 10,
-    '9.11' => 11,
+    '9.1' => 55.65,
+    '9.2' => 108.15,
+    '9.3' => 211.80,
+    '9.4' => 324.75,
+    '9.5' => 176.10,
+    '9.6' => 590.25,
+    '9.7' => 335.40,
+    '9.8' => 506.85,
+    '9.9' => 194.70,
+    '9.10' => 123.45,
+    '9.11' => 844.20,
 
 ];
 //$test = '1';
@@ -227,10 +240,15 @@ foreach($data as $key_doctorName=>$value_services) {
 //];
 //$writer->addRows($multipleRows);
 
-///** Shortcut: add a row from an array of values */
-//$values = ['Carl', 'is', 'great!'];
-//$rowFromValues = WriterEntityFactory::createRowFromArray($values);
-//$writer->addRow($rowFromValues);
+$values1 = [''];
+$rowFromValues = WriterEntityFactory::createRowFromArray($values1);
+$writer->addRow($rowFromValues);
+
+
+
+$values = ['Підсумок'];
+$rowFromValues = WriterEntityFactory::createRowFromArray($values,$sumStyle);
+$writer->addRow($rowFromValues);
 
 $writer->close();
 
