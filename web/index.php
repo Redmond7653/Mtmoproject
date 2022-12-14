@@ -51,25 +51,25 @@ foreach ($reader->getSheetIterator() as $sheet) {
 
                         $doctorName = $tmp_cells[33];
                         $services = $tmp_cells[54];
+                        $comment = $tmp_cells[57];
                         $services = explode(',', $services);
 
 
-                        if ($tmp_cells[55]) {
-                            break;
-                        } else {
-                            $found = false;
-                            foreach ($services as $number_of_service) {
-                                $check = '9.';
-                                $pos = strpos($number_of_service, $check);
-                                if ($pos === 0) {
-                                    $tableColumns[$number_of_service] = $number_of_service;
-                                    $data[$doctorName][$number_of_service] = $data[$doctorName][$number_of_service] + 1;
-                                    $found = true;
+                            if ($comment == 'ВІЛ - Відсутня процедура з видачі препарату' || $comment == 'ВІЛ - не останній заклад' || $comment == 'Медичні записи про виявлені клінічні випадки які надані одному пацієнту протягом одного (безперервного) проміжку часу перебування пацієнта у одного надавача медичних послуг' || $comment == 'Медичні записи, які визнано дублікатами на підставі співпадіння ключових атрибутів' || $comment == 'Помилковий запис (Entered in error)') {
+                                break;
+                            }
+                            if ($tmp_cells[62]) {
+                                $found = false;
+                                foreach ($services as $number_of_service) {
+                                    $check = '9.';
+                                    $pos = strpos($number_of_service, $check);
+                                    if ($pos === 0) {
+                                        $tableColumns[$number_of_service] = $number_of_service;
+                                        $data[$doctorName][$number_of_service] = $data[$doctorName][$number_of_service] + 1;
+                                        $found = true;
+                                    }
                                 }
                             }
-                        }
-
-
 
 
                 }
@@ -130,7 +130,7 @@ $writer = WriterEntityFactory::createXLSXWriter();
 // $writer = WriterEntityFactory::createODSWriter();
 // $writer = WriterEntityFactory::createCSVWriter();
 
-$writer->openToFile("test.xlsx"); // write data to a file or to a PHP stream
+$writer->openToFile("paket_9.xlsx"); // write data to a file or to a PHP stream
 //$writer->openToBrowser($fileName); // stream data directly to the browser
 
 
@@ -226,6 +226,7 @@ foreach($data as $key_doctorName=>$value_services) {
     $doctor_services[] = WriterEntityFactory::createCell($small_part_of_sum);
     $doctorRow = WriterEntityFactory::createRow($doctor_services);
     $writer->addRow($doctorRow);
+    $sum = 0;
 }
 //$doctorRow = WriterEntityFactory::createRow($doctor_services);
 //$writer->addRow($doctorRow);
