@@ -75,9 +75,9 @@ foreach ($reader->getSheetIterator() as $sheet) {
                 }
                 $table_rows[] = $tmp_cells;
             }
-//            if ($rowKey > 250) {
-//                break;
-//            }
+            if ($rowKey > 250) {
+                break;
+            }
 
             if ($rowKey == 3) {
                 $tmp_cells = [];
@@ -208,6 +208,9 @@ $koef = [
 ];
 //$test = '1';
 //$test1 = '2';
+$summary = [];
+$total['sum'] = 0;
+$total['sum.05'] = 0;
 foreach($data as $key_doctorName=>$value_services) {
     $doctor_services = [WriterEntityFactory::createCell($key_doctorName)];
     foreach($tableColumns as $col) {
@@ -218,13 +221,26 @@ foreach($data as $key_doctorName=>$value_services) {
             $sum = $sum + $value_services[$col] * ($koef[$col] ?? 0);
 
             $small_part_of_sum = $sum * 0.05;
+
         } else {
             $doctor_services[] = WriterEntityFactory::createCell('');
         }
     }
+
+    foreach ($value_services as $key=>$value) {
+        if (isset($summary[$key])) {
+            // Добавляти до існуючого елемету summary
+            $summary[$key] = $summary[$key] + $value;
+        } else {
+            $summary[$key] = $value;
+        }
+    }
     $doctor_services[] = WriterEntityFactory::createCell($sum);
     $doctor_services[] = WriterEntityFactory::createCell($small_part_of_sum);
+    $total['sum'] = $total['sum'] + $sum;
+    $total['sum.05'] = $total['sum.05'] + $small_part_of_sum;
     $doctorRow = WriterEntityFactory::createRow($doctor_services);
+
     $writer->addRow($doctorRow);
     $sum = 0;
 }
@@ -246,8 +262,20 @@ $rowFromValues = WriterEntityFactory::createRowFromArray($values1);
 $writer->addRow($rowFromValues);
 
 
-
+//$count = count($data)+1;
 $values = ['Підсумок'];
+foreach ($tableColumns as $element) {
+    $values[] = $summary[$element];
+}
+$values[] = $total['sum'];
+$values[] = $total['sum']*0.05;
+//$column = 'A';
+//foreach ($tableColumns as $services_count) {
+//    $code = ord($column) + 1;
+//    $column = chr($code);
+//
+//    $values[] = "=sum({$column}2:{$column}{$count})";
+//}
 $rowFromValues = WriterEntityFactory::createRowFromArray($values,$sumStyle);
 $writer->addRow($rowFromValues);
 
