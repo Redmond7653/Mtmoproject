@@ -58,7 +58,7 @@ foreach ($reader->getSheetIterator() as $sheet) {
                             if ($comment == 'ВІЛ - Відсутня процедура з видачі препарату' || $comment == 'ВІЛ - не останній заклад' || $comment == 'Медичні записи про виявлені клінічні випадки які надані одному пацієнту протягом одного (безперервного) проміжку часу перебування пацієнта у одного надавача медичних послуг' || $comment == 'Медичні записи, які визнано дублікатами на підставі співпадіння ключових атрибутів' || $comment == 'Помилковий запис (Entered in error)') {
                                 break;
                             }
-                            if ($tmp_cells[62]) {
+                            if (!empty($tmp_cells[57])) {
                                 $found = false;
                                 foreach ($services as $number_of_service) {
                                     $check = '9.';
@@ -69,6 +69,7 @@ foreach ($reader->getSheetIterator() as $sheet) {
                                         $found = true;
                                     }
                                 }
+                                break;
                             }
 
 
