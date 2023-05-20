@@ -27,3 +27,4 @@ function db_error($str, $db = NULL) {
 
     return '';
 }
+

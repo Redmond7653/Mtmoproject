@@ -1,4 +1,4 @@
-<form action="index.php" method="post">
+<form action="indasdex.php" method="post">
     <select name="picture_name">
         <?php $all_images = select_unique_images() ?>
         <?php foreach ($all_images as $image) : ?>
@@ -9,7 +9,7 @@
     <input type="submit" value="Показати картинку">
 </form>
 
-<form action="index.php" method="post">
+<form action="indasdex.php" method="post">
     <input type="hidden" name="action" value="default">
     <input type="submit" value="Повернутися" name="submit">
 </form>

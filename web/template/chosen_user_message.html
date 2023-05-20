@@ -1,7 +1,7 @@
 <div style="display: block">
     <div><hr></div>
     <div>
-        <form action="index.php" method="post">
+        <form action="indasdex.php" method="post">
             <select name="user_id">
                 <?php $all_users = select_users_names() ?>
                 <?php foreach ($all_users as $key=>$user) : ?>
@@ -17,7 +17,7 @@
         <div style="display: inline-block">Повідомлення: <br><br> <?=show_user_messages($_SESSION['show_user_message'])?></div><br>
     </div>
 
-    <form action="index.php" method="post">
+    <form action="indasdex.php" method="post">
         <input type="hidden" name="action" value="default">
         <input type="submit" value="Повернутися">
     </form>

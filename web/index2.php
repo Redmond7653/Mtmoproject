@@ -19,7 +19,7 @@ use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 require_once 'autoload.php';
 require_once 'tools.php';
 
-$file = 'ttt.xlsx';
+$file = 'aaa.xlsx';
 $rows_max = 3;
 $rows_count = 0;
 
@@ -51,14 +51,14 @@ foreach ($reader->getSheetIterator() as $sheet) {
 
                         $doctorName = $tmp_cells[33];
                         $services = $tmp_cells[55];
-                        $comment = $tmp_cells[58];
+                        $comment = $tmp_cells[59];
                         $services = explode(',', $services);
 
 
                             if ($comment == "Ні") {
                                 break;
                             }
-                            if (!empty($tmp_cells[58])) {
+                            if (!empty($tmp_cells[59])) {
                                 $found = false;
                                 foreach ($services as $number_of_service) {
                                     $check = '9.';
@@ -207,7 +207,7 @@ $koef = [
     '9.11' => 844.20,
 
 ];
-//$test = '1';
+//$project_array = '1';
 //$test1 = '2';
 $summary = [];
 $total['sum'] = 0;

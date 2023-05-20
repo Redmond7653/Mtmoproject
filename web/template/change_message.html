@@ -1,4 +1,4 @@
-<form action="index.php" method="post" enctype="multipart/form-data">
+<form action="indasdex.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action" value="edit_message">
             <input type="hidden" name="id" value="<?=$data['message_id']?>">
             <textarea name="message" placeholder="Повідомлення"/><?=$data['user_message'] ?? ''?></textarea>
@@ -8,7 +8,7 @@
 
 <div><?=$data['user_images'] ?? ''?></div>
 
-<form action="index.php" method="post">
+<form action="indasdex.php" method="post">
     <input type="hidden" name="action" value="default">
     <input type="submit" value="Повернутися" name="submit">
 </form>

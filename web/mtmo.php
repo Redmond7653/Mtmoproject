@@ -211,7 +211,7 @@ $file_basename = $check_file['filename'];
         '9.11' => 844.20,
 
     ];
-//$test = '1';
+//$project_array = '1';
 //$test1 = '2';
     $summary = [];
     $total['sum'] = 0;

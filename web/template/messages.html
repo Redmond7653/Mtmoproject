@@ -35,7 +35,7 @@
                     <a href="/index.php?page=<?=$i?>">Get <?=$i?></a>
                 </div>
                 <div style="display: block">
-                    <form action="index.php" method="post">
+                    <form action="indasdex.php" method="post">
                         <input type="hidden" name="page" value="<?=$i?>">
                         <p><input type="submit" value="page <?=$i?>"/></p>
                     </form>
@@ -45,7 +45,7 @@
     </div>
 
     <div>
-        <form action="index.php" method="post" enctype="multipart/form-data">
+        <form action="indasdex.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action" value="message">
             <textarea name="message" placeholder="Повідомлення"/></textarea>
             <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
@@ -55,30 +55,30 @@
     </div>
 
 
-    <form action="index.php" method="post">
+    <form action="indasdex.php" method="post">
         <input type="hidden" name="action" value="change_pass">
         <input type="submit" value="Змінити пароль">
     </form>
 
 
-    <form action="index.php" method="post">
+    <form action="indasdex.php" method="post">
         <input type="hidden" name="action" value="chosen_user_message">
         <input type="submit" value="Показати повідомлення користувачів">
     </form>
 
-    <form action="index.php" method="post">
+    <form action="indasdex.php" method="post">
         <input type="hidden" name="action" value="show_custom_message">
         <input type="submit" value="Показати вибране повідомлення користувача">
     </form>
 
 
-    <form action="index.php" method="post">
+    <form action="indasdex.php" method="post">
         <input type="hidden" name="action" value="go_to_upload_image">
         <input type="submit" value="Загрузити картинку" name="submit">
     </form>
 
 
-    <form action="index.php" method="post">
+    <form action="indasdex.php" method="post">
         <input type="hidden" name="action" value="go_to_selected_image">
         <input type="submit" value="Вибрати картинку" name="submit">
     </form>
