@@ -46,11 +46,28 @@ foreach ($projects_arrays_data as $projects_arrays_elements) {
 
     $skills = $projects_arrays_elements['attributes']['skills'];
 
-    $project_skills = [];
+    $project_skills_name = [];
+    $project_skills_id = [];
     foreach ($skills as $arrays_skill_elements) {
-        $project_skills[] = $arrays_skill_elements['name'];
+        $project_skills_name[] = $arrays_skill_elements['name'];
+        $project_skills_id[] = $arrays_skill_elements['id'];
+        $skills_id = $arrays_skill_elements['id'];
+        $skills_name = $arrays_skill_elements['name'];
+
+        $select_skills_table = mysqli_query($connect, "SELECT * FROM `skills` WHERE `skills_id` = '$skills_id'");
+        $skills_id_exists = $select_skills_table->fetch_assoc();
+        if (empty($skills_id_exists)) {
+            mysqli_query($connect, "INSERT INTO `skills` (`skills_id`,`skills_name`) VALUES ('$skills_id','$skills_name')");
+//            mysqli_query($connect< "")
+        }
+        unset($skills_id);
+        unset($skills_name);
     }
-    $project_skills_string = implode(",", $project_skills);
+
+    $project_skills_name_string = implode(",", $project_skills_name);
+    $project_skills_id_string = implode(",", $project_skills_id);
+
+
 
     $check_project_id = $project_array['id'];
 
@@ -65,16 +82,31 @@ foreach ($projects_arrays_data as $projects_arrays_elements) {
         mysqli_query($connect,"INSERT INTO `api` (
                    `project_id`, `name`, `url`,`skills`,`status`,`budget_amount`,`budget_currency`,`employer_login`,`employer_name`
                    ) VALUES (
-                             '{$project_array['id']}','{$project_array['name']}','{$project_array['url']}','$project_skills_string','{$project_array['status']}','{$project_array['budget_amount']}','{$project_array['budget_currency']}','{$project_array['employer_login']}','{$project_array['employer_name']}')");
-        $project_array = [];
-        $project_skills = [];
+                             '{$project_array['id']}','{$project_array['name']}','{$project_array['url']}','$project_skills_name_string','{$project_array['status']}','{$project_array['budget_amount']}','{$project_array['budget_currency']}','{$project_array['employer_login']}','{$project_array['employer_name']}')");
+
     }
 
+    foreach ($project_skills_id as $project_skill_id) {
+        $check_skills_per_api_table = mysqli_query($connect, "SELECT * FROM `skills_per_api` WHERE `api_id` = '$check_project_id' AND `skills_id` = '$project_skill_id'");
+        $skills_per_api_exists = $check_skills_per_api_table->fetch_assoc();
+        if (empty($skills_per_api_exists)) {
+            mysqli_query($connect, "INSERT INTO `skills_per_api` (`api_id`,`skills_id`) VALUES ('{$project_array['id']}', '$project_skill_id')");
+        }
+    }
+
+    $project_array = [];
+    $project_skills_name = [];
 }
 
 $db = mysqli_query($connect, "SELECT * FROM `api`");
 
 $project_table = $db->fetch_all(MYSQLI_ASSOC);
+
+$skills_db = mysqli_query($connect, "SELECT * FROM `skills`");
+
+$select_table = $skills_db->fetch_all(MYSQLI_ASSOC);
+
+
 
 ?>
 
@@ -84,29 +116,55 @@ $project_table = $db->fetch_all(MYSQLI_ASSOC);
         border: 1px solid black;
         padding: 5px;
     }
+    div {
+        padding: 10px;
+    }
 </style>
 
-<table>
-    <tr>
-        <th>Назва проекту</th>
-        <th>URL</th>
-        <th>Статус</th>
-        <th>Навички</th>
-        <th>Бюджет</th>
-        <th>Валюта</th>
-        <th>Логін замовника</th>
-        <th>Ім'я замовника</th>
-    </tr>
-    <?php foreach ($project_table as $table_row) : ?>
-    <tr>
-        <td><?=$table_row['name']?></td>
-        <td><?=$table_row['url']?></td>
-        <td><?=$table_row['status']?></td>
-        <td><?=$table_row['skills']?></td>
-        <td><?=$table_row['budget_amount']?></td>
-        <td><?=$table_row['budget_currency']?></td>
-        <td><?=$table_row['employer_login']?></td>
-        <td><?=$table_row['employer_name']?></td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<div>
+
+    <form action="selected_table.php" method="post">
+        <select name="selected_option[]" multiple>
+            <?php foreach ($select_table as $select_row) : ?>
+                <option value="<?=$select_row['skills_id']?>"><?=$select_row['skills_name']?></option>
+            <?php endforeach; ?>
+        </select>
+        <input type="submit" value="Відфільтрувати">
+    </form>
+</div>
+
+<!--<div>-->
+<!--    <form action="selected_table.php" method="post">-->
+<!--        <input type="submit" value="Відфільтрувати">-->
+<!--    </form>-->
+<!--</div>-->
+
+
+
+<div>
+    <table>
+        <tr>
+            <th>Назва проекту</th>
+            <th>URL</th>
+            <th>Статус</th>
+            <th>Навички</th>
+            <th>Бюджет</th>
+            <th>Валюта</th>
+            <th>Логін замовника</th>
+            <th>Ім'я замовника</th>
+        </tr>
+        <?php foreach ($project_table as $table_row) : ?>
+        <tr>
+            <td><?=$table_row['name']?></td>
+            <td><?=$table_row['url']?></td>
+            <td><?=$table_row['status']?></td>
+            <td><?=$table_row['skills']?></td>
+            <td><?=$table_row['budget_amount']?></td>
+            <td><?=$table_row['budget_currency']?></td>
+            <td><?=$table_row['employer_login']?></td>
+            <td><?=$table_row['employer_name']?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
+

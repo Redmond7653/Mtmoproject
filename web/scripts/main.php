@@ -14,6 +14,7 @@ $user_messages = $result->fetch_all(MYSQLI_ASSOC);
 </div>
 
 <form action="/index.php" method="post">
+
     <input type="submit" value="Написати відгук">
 </form>
 
