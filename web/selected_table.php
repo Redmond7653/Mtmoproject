@@ -32,8 +32,10 @@ foreach ($_REQUEST['selected_option'] as $list_of_skills){
     $test[] = $list_of_skills;
 }
 
-$selected_skills = mysqli_query($connect,"SELECT * FROM `skills` WHERE `skills_id` IN (".implode(',', $test).")");
-$result1 = $selected_skills->fetch_all(MYSQLI_ASSOC);
+$selected_skills = mysqli_query($connect,"SELECT skills_name FROM `skills` WHERE `skills_id` IN (".implode(',', $test).")");
+$rows = $selected_skills->fetch_all(MYSQLI_ASSOC);
+
+
 
 
 
@@ -44,11 +46,12 @@ $result1 = $selected_skills->fetch_all(MYSQLI_ASSOC);
         border: 1px solid black;
         padding: 5px;
     }
+    div {
+        padding: 5px;
+    }
 </style>
 
-<h1>Перелік проектів з вибраними навичками:<?php foreach ($result1 as $skills_array_elements) : ?>
-    <?=$skills_array_elements['skills_name']?>,
-    <?php endforeach;?>
+<h1>Перелік проектів з вибраними навичками:<?php echo implode(', ', array_column($rows, 'skills_name'))?>
 </h1>
 
 <div>
@@ -78,6 +81,8 @@ $result1 = $selected_skills->fetch_all(MYSQLI_ASSOC);
     </table>
 </div>
 
-<form action="index.php" method="post">
-    <input type="submit" value="На головну">
-</form>
+<div>
+    <form action="index.php" method="post">
+        <input type="submit" value="На головну">
+    </form>
+</div>
