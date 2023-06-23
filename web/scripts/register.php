@@ -1,63 +1,44 @@
 <?php
 
-if (!isset($_POST['login'])) {
-//   include 'template/register.html';
-    $_SESSION['render'][] = [
-        '#template' => 'register',
-    ];
-
+if (!isset($_POST['email'])) {
+    include 'template/register.html';
     return;
 }
 
-
-
-
+$email = $_POST['email'] ?? '';
 $login = $_POST['login'] ?? '';
-$name = $_POST['name'] ?? '';
 $pass = $_POST['pass'] ?? '';
 
-
 if (!empty($_POST)) {
-    $all_ok = TRUE;
-    if (strlen($login) < 3 || strlen($login) > 100) {
-        echo "Недопустима довжина логіна<br>";
-        $all_ok = FALSE;
+    $good = true;
+    if (strlen($email) < 10 || strlen($email) > 50) {
+        echo ' Недопустима довжина почти';
+        $good = false;
     }
-    if (strlen($name) < 3 || strlen($name) > 50) {
-        echo "Недопустима довжина імені<br>";
-        $all_ok = FALSE;
+    if (strlen($login) < 3 || strlen($login) > 50) {
+        echo 'Недопустима довжина імені';
+        $good = false;
     }
-    if (strlen($pass) < 2 || strlen($pass) > 8) {
-        echo "Недопустима довжина пароля<br>";
-        $all_ok = FALSE;
+    if (strlen($pass) < 2 || strlen($pass) > 30) {
+        echo 'Недопустима довжина паролю';
+        $good = false;
     }
-    if (!$all_ok) {
+    if (!$good) {
         exit;
     }
 }
 
-$pass = md5($pass."goodluckhavefun");
+$pass = md5($pass."Russia_is_a_terrorist");
 
-$db = db_connect();
+include 'connect.php';
 
-
-if ($result = $db->query("SELECT * FROM `users` WHERE `login` = '$login'")) {
-    $userExists = $result->fetch_assoc();
-    if ($userExists) {
-        echo 'Такий юзер існує';
-    } else {
-        $time = date('Y-m-d h:m:s');
-        $value = $db->query("INSERT INTO `users` (`login`, `pass`, `name`, `create_date_user`) VALUES ('$login', '$pass', '$name', '$time')");
-    }
+$result = mysqli_query($connect, "SELECT * FROM `users` WHERE `email` = '$email' AND `login` = '$login'");
+$user_exist = $result->fetch_assoc();
+if ($user_exist) {
+    echo 'Такий користувач уже існує';
 } else {
-    echo db_error(__LINE__ . ':' . __FILE__, $db);
+    $time = date('Y-m-d h:m:s');
+    $data = mysqli_query($connect, "INSERT INTO `users`(`email`, `login`, `pass`, `create_user_data`) VALUES ('$email','$login', '$pass', '$time')");
 }
 
-
-
-$db->close();
-
-//include 'template/auth.html';
-$_SESSION['render'][] = [
-    '#template' => 'auth',
-];
+include 'template/auth.html';

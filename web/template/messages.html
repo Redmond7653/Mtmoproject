@@ -1,102 +1,41 @@
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!--    <meta charset="utf-8">-->
-<!--    <title>Тест</title>-->
-<!--    <link rel="stylesheet" href="css/global.css">-->
-<!--</head>-->
-<!--<body>-->
-<!--    Count is: --><?//= $_SESSION['count'] ?>
-<!--    <div class="count">-->
-<!--    </div>-->
-<!---->
-<!--    --><?php // (!empty($_SESSION['user']))  ?>
-<!--    Привіт --><?//=$_SESSION['user']['name']?><!--. Щоб вийти нажміть-->
-<!--    <form action="index.php" method="post" style="display: inline-block">-->
-<!--        <input type="hidden" name="action" value="logout">-->
-<!--        <input type="submit" name="submit" id="submit" value="Exit">-->
-<!--    </form><br>-->
-    <div> <br><br> <?=$data['user_messages'] ?? ''?></div><br>
 
-    <div><?=get_messages_number($_SESSION['user']['id'])?>&nbsp;messages in total</div>
-    <div style="display: flex">
-        <!--        <form action="index.php" method="post">-->
-        <!--            <input type="hidden" name="page" value="1">-->
-        <!--            <p><input type="submit" value="page 1"/></p>-->
-        <!--        </form>-->
-        <!---->
-        <!--        <form action="index.php" method="post">-->
-        <!--            <input type="hidden" name="page" value="2">-->
-        <!--            <p><input type="submit" value="page 2"/></p>-->
-        <!--        </form>-->
-        <?php for ($i = 1; $i <= get_pages_number($_SESSION['user']['id']); $i++) : ?>
-            <div>
-                <div style="display: block">
-                    <a href="/index.php?page=<?=$i?>">Get <?=$i?></a>
-                </div>
-                <div style="display: block">
-                    <form action="indasdex.php" method="post">
-                        <input type="hidden" name="page" value="<?=$i?>">
-                        <p><input type="submit" value="page <?=$i?>"/></p>
-                    </form>
-                </div>
-            </div>
-        <?php endfor; ?>
-    </div>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div>Привіт <?=$user_name?></div>
 
+    <form action="index.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="message">
+        <textarea name="message" placeholder="Повідомлення"/></textarea>
+        <p><input type="submit" value="Відправити"/></p>
+    </form>
+
+
+    <form action="../index.php" method="post" style="display: inline-block">
+        <input type="hidden" name="action" value="logout">
+        <input type="submit" name="submit" id="submit" value="Exit">
+    </form><br>
+
+    <div><?=get_messages_number($_SESSION['user']->getId())?>&nbsp;messages in total</div>
     <div>
-        <form action="indasdex.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="message">
-            <textarea name="message" placeholder="Повідомлення"/></textarea>
-            <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
-    <!--        <input type="submit" value="Upload Image" name="submit">-->
-            <p><input type="submit" value="Відправити"/></p>
-        </form>
+        <div style="display: block">
+            <div><?=$user_messages?></div>
+        </div>
     </div>
+    <?php for ($h = 1; $h <= get_pages_number($_SESSION['user']->getId()); $h++) : ?>
+        <div>
+            <div style="display: block">
+                <form action="index.php" method="post">
+                    <input type="hidden" name="page" value="<?=$h?>">
+                    <p><input type="submit" value="page <?=$h?>"/></p>
+                </form>
+            </div>
+        </div>
+    <?php endfor; ?>
 
-
-    <form action="indasdex.php" method="post">
-        <input type="hidden" name="action" value="change_pass">
-        <input type="submit" value="Змінити пароль">
-    </form>
-
-
-    <form action="indasdex.php" method="post">
-        <input type="hidden" name="action" value="chosen_user_message">
-        <input type="submit" value="Показати повідомлення користувачів">
-    </form>
-
-    <form action="indasdex.php" method="post">
-        <input type="hidden" name="action" value="show_custom_message">
-        <input type="submit" value="Показати вибране повідомлення користувача">
-    </form>
-
-
-    <form action="indasdex.php" method="post">
-        <input type="hidden" name="action" value="go_to_upload_image">
-        <input type="submit" value="Загрузити картинку" name="submit">
-    </form>
-
-
-    <form action="indasdex.php" method="post">
-        <input type="hidden" name="action" value="go_to_selected_image">
-        <input type="submit" value="Вибрати картинку" name="submit">
-    </form>
-
-
-
-    <!--<form action="index.php" method="post">-->
-    <!--    <select name="picture_name">-->
-    <!--        --><?php //$all_images = select_unique_images() ?>
-    <!--        --><?php //foreach ($all_images as $image) : ?>
-    <!--            <option value="--><?//=$image?><!--">--><?//=basename($image)?><!--</option>-->
-    <!--        --><?php //endforeach; ?>
-    <!--    </select>-->
-    <!--    <input type="hidden" name="action" value="show_select_pictures">-->
-    <!--    <input type="submit" value="Показати картинку">-->
-    <!--</form>-->
-    <!---->
-    <!--<div>-->
-    <!--    <img src="--><?//=$picture?><!--">-->
-    <!--</div>-->
-
+</body>
+</html>

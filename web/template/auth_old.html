@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Тест</title>
+</head>
+<body>
+    <div class="count">
+        Count is: <?= $_SESSION['count'] ?>
+    </div>
+
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">Авторизація
+            <form action="indasdex.php" method="post">
+                <input type="hidden" name="action" value="login">
+                <input type="text" class="form-control" name="login" id="login" placeholder="Введіть логін"><br>
+                <input type="text" class="form-control" name="pass" id="pass" placeholder="Введіть пароль"><br>
+                <p>
+                    <label>
+                        <input type="submit" name="submit" id="submit" value="Авторизуватися">
+                    </label>
+
+                </p>
+            </form>
+            <form action="indasdex.php" method="post" style="display: inline-block">
+                <input type="hidden" name="action" value="register">
+                <input type="submit" name="submit" id="submit" value="Реєстрація">
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

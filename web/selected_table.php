@@ -82,7 +82,7 @@ $rows = $selected_skills->fetch_all(MYSQLI_ASSOC);
 </div>
 
 <div>
-    <form action="index.php" method="post">
+    <form action="Final_phpcource_hometask.php" method="post">
         <input type="submit" value="На головну">
     </form>
 </div>

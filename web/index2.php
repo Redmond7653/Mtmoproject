@@ -17,9 +17,9 @@ use Box\Spout\Common\Entity\Style\Color;
 use Box\Spout\Writer\Common\Creator\Style\StyleBuilder;
 
 require_once 'autoload.php';
-require_once 'tools.php';
+require_once 'tools_old.php';
 
-$file = 'aaa.xlsx';
+$file = 'q.xlsx';
 $rows_max = 3;
 $rows_count = 0;
 
