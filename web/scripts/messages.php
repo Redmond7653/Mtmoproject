@@ -1,9 +1,6 @@
 <?php
 
-require_once 'message_load_class.php';
-
-
-
+use \MyClasses\Message;
 
 $user_id = $_SESSION['user']->getId();
 $message = $_POST['message'];

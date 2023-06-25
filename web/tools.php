@@ -1,6 +1,6 @@
 <?php
 
-require_once 'scripts/user_class.php';
+use MyClasses\User;
 include "scripts/connect.php";
 
 

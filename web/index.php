@@ -1,7 +1,13 @@
 <?php
 
+spl_autoload_register(function ($class_name) {
+    $class_name = str_replace('\\', DIRECTORY_SEPARATOR, $class_name);
+    include $class_name . '.php';
+});
 
-require_once 'scripts/user_class.php';
+
+//require_once 'scripts/Message.php';
+require_once 'MyClasses/User_class.php';
 session_start();
 
 include 'scripts/connect.php';

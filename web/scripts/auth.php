@@ -1,6 +1,7 @@
 <?php
 
-require_once 'user_class.php';
+use MyClasses\User;
+use MyClasses\Db;
 
 $login = $_POST['login'] ?? '';
 $pass = $_POST['pass'] ?? '';
@@ -22,7 +23,7 @@ if (!empty($_POST)) {
 
 $pass = md5($pass."Russia_is_a_terrorist");
 
-include "connect.php";
+
 
 
 //$result = mysqli_query($connect,"SELECT * FROM `users` WHERE `login` = '$login' AND `pass` = '$pass'");
@@ -32,11 +33,7 @@ include "connect.php";
 
 $user = new User;
 $user->load($login, $pass);
-//$test->setName('Denchik');
-//$user->setname('yasya');
-//
-//
-//$user->load($id);
+
 
 $good = true;
 if (is_null($user->getName())) {
