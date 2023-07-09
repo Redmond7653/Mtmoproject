@@ -1,10 +1,10 @@
 <?php
 session_start();
-$_SESSION['render'] = [];
-$_SESSION['render'][] = [
-    '#template' => '_header',
-    '#weight' => 0,
-];
+//$_SESSION['render'] = [];
+//$_SESSION['render'][] = [
+//    '#template' => '_header',
+//    '#weight' => 0,
+//];
 
 unset($_SESSION['show_user_message']);
 
@@ -106,7 +106,7 @@ switch ($action) {
     case 'change_user_message':
 //        $message_id = $_REQUEST['message_id'];
 //        $user_message = $_REQUEST['user_message'];
-//        include 'template/change_message.html';
+//        include 'template/change_message_old.html';
         $_SESSION['render'][] = [
             '#template' => 'change_message',
             '#data' => [
@@ -121,7 +121,7 @@ switch ($action) {
         break;
 
     case 'edit_message':
-        include 'scripts/change_message.php';
+        include 'scripts/change_message_old.php';
         include 'scripts/upload_img.php';
         break;
 

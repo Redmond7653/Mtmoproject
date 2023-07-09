@@ -1,41 +1,43 @@
-
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-    <div>Привіт <?=$user_name?></div>
-
-    <form action="index.php" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="action" value="message">
-        <textarea name="message" placeholder="Повідомлення"/></textarea>
-        <p><input type="submit" value="Відправити"/></p>
-    </form>
+<?php _template('_header'); ?>
 
 
-    <form action="../index.php" method="post" style="display: inline-block">
-        <input type="hidden" name="action" value="logout">
-        <input type="submit" name="submit" id="submit" value="Exit">
-    </form><br>
 
-    <div>Total <?=get_messages_number($_SESSION['user']->getId())?> messages</div>
-    <div>
-        <div style="display: block">
-            <div><?=$user_messages?></div>
-        </div>
+  <div>Total <?=get_messages_number($_SESSION['user']->getId())?> messages</div>
+  <div>
+    <div style="display: block">
+      <div><?=get_page_header()?></div>
+
+      <div>
+        <?php if(is_array($render['message_list'])) foreach ($render['message_list'] as $message) : ?>
+          
+          <?php _template('one_message', $message)?>
+        <?php endforeach; ?>
+      </div>
+
     </div>
+  </div>
+  <div style="display: flex">
     <?php for ($h = 1; $h <= get_pages_number($_SESSION['user']->getId()); $h++) : ?>
-        <div>
-            <div style="display: block">
-                <form action="index.php" method="post">
-                    <input type="hidden" name="page" value="<?=$h?>">
-                    <p><input type="submit" value="page <?=$h?>"/></p>
-                </form>
-            </div>
+      <div >
+        <div style="padding: 3px">
+          <form action="/index.php" method="post">
+            <input type="hidden" name="page" value="<?=$h?>">
+            <p><input type="submit" value="page <?=$h?>"/></p>
+          </form>
         </div>
+      </div>
     <?php endfor; ?>
+  </div>
 
-</body>
-</html>
+  <div>
+    <form action="/index.php" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="message">
+      <textarea name="message" placeholder="Повідомлення"></textarea>
+      <input type="file" name="fileUpload[]" id="fileUpload">
+      <p><input type="submit" value="Надіслати" name="submit"/></p>
+    </form>
+  </div>
+
+<?php _template('_footer');?>
+
+

@@ -14,7 +14,7 @@ $delete_img = $db->query($q);
 
 $db->close();
 
-//include 'template/change_message.html';
+//include 'template/change_message_old.html';
 $_SESSION['render'][] = [
     '#template' => 'change_message',
     '#data' => [

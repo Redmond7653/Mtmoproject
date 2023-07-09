@@ -1,7 +1,7 @@
 <?php
     echo 'Напишіть свої дані';
     include 'tools_old.php';
-    include 'template/_header.html';
+//    include 'template/_header.html';
 
 
 

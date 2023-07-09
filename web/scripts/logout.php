@@ -1,4 +1,7 @@
 <?php
 
+use MyClasses\Template;
+
 unset($_SESSION['user']);
-include 'template/auth.html';
+  $template = new Template();
+  $template->include('template/auth.html');

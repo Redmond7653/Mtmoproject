@@ -1,5 +1,6 @@
 <?php
 
+use MyClasses\Template;
 if (!isset($_POST['email'])) {
     include 'template/register.html';
     return;
@@ -41,4 +42,7 @@ if ($user_exist) {
     $data = mysqli_query($connect, "INSERT INTO `users`(`email`, `login`, `pass`, `create_user_data`) VALUES ('$email','$login', '$pass', '$time')");
 }
 
-include 'template/auth.html';
+
+$template = new Template();
+$template->include('template/auth.html',$user_array_messages, $page_number, $user_name);
+//$template->first_line('template/auth,html');

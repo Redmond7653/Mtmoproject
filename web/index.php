@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
 
 spl_autoload_register(function ($class_name) {
     $class_name = str_replace('\\', DIRECTORY_SEPARATOR, $class_name);
@@ -6,16 +7,14 @@ spl_autoload_register(function ($class_name) {
 });
 
 
-//require_once 'scripts/Message.php';
-require_once 'MyClasses/User_class.php';
+
+use MyClasses\User;
+use MyClasses\Template;
+
 session_start();
 
-include 'scripts/connect.php';
+include 'tools.php';
 
-
-if ($_SESSION['user']) {
-    require_once 'tools.php';
-}
 
 $action = NULL;
 if (!empty($_POST['action'])) {
@@ -38,11 +37,23 @@ switch ($action) {
     case 'main':
         include 'template/messages.html';
         break;
+    case 'edit_user_message':
+        include 'template/change_message.html';
+        break;
+    case 'edit_message':
+        include 'scripts/change.message.php';
+        break;
     default:
         if (empty($_SESSION['user'])) {
             include 'template/auth.html';
         } else
          {
-            include 'template/messages.html';
+           _template(
+             'messages',
+             [
+               'message_list' => array_part_of_user_messages(),
+             ]
+           );
+//            include 'template/messages.html';
         }
 }

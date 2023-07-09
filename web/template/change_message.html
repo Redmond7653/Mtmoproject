@@ -1,14 +1,19 @@
-<form action="indasdex.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="action" value="edit_message">
-            <input type="hidden" name="id" value="<?=$data['message_id']?>">
-            <textarea name="message" placeholder="Повідомлення"/><?=$data['user_message'] ?? ''?></textarea>
-            <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
-            <input type="submit" name="submit" value="Поміняти повідомлення">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="post">
+    <input type="hidden" name="action" value="edit_message">
+    <input type="hidden" name="id" value="<?=$_REQUEST['message_id']?>">
+    <textarea name="message" placeholder="Повідомлення"/><?=$_REQUEST['user_message'] ?? ''?></textarea>
+    <input type="submit" name="submit" value="Поміняти повідомлення">
 </form>
-
-<div><?=$data['user_images'] ?? ''?></div>
-
-<form action="indasdex.php" method="post">
-    <input type="hidden" name="action" value="default">
+<form action="index.php" method="post">
+    <input type="hidden" name="action" value="main">
     <input type="submit" value="Повернутися" name="submit">
 </form>
+</body>
+</html>

@@ -2,6 +2,8 @@
 
 use MyClasses\User;
 use MyClasses\Db;
+use MyClasses\Template;
+use MyClasses\Message;
 
 $login = $_POST['login'] ?? '';
 $pass = $_POST['pass'] ?? '';
@@ -35,8 +37,9 @@ $user = new User;
 $user->load($login, $pass);
 
 
+
 $good = true;
-if (is_null($user->getName())) {
+if (empty($user->getName())) {
     echo "Такий користувач не знайдений";
     $good = false;
 }
@@ -49,5 +52,8 @@ $_SESSION['user'] = $user;
 
 //$test1 = new Messages();
 //$test2 = $test1->get_current_user_messages($_SESSION['user']->getId());
-require_once 'tools.php';
-include 'template/messages.html';
+//require_once 'tools.php';
+//include 'template/messages.html';
+
+$template = new Template();
+$template->include('template/messages.html',$user_array_messages, $page_number, $user_name);
