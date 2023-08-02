@@ -12,9 +12,4 @@
       echo "<!--End_output.$html_template-->";
     }
     
-    public function first_line($template) {
-      $fp = fopen($template,'w');
-      fwrite($fp, 'begin_output');
-      fclose($fp);
-    }
   }

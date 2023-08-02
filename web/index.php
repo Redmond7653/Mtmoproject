@@ -16,6 +16,7 @@ session_start();
 include 'tools.php';
 
 
+
 $action = NULL;
 if (!empty($_POST['action'])) {
     $action = $_POST['action'];
@@ -35,13 +36,25 @@ switch ($action) {
         include 'scripts/messages.php';
         break;
     case 'main':
-        include 'template/messages.html';
+      _template('messages',
+        [
+          'message_list' => array_part_of_user_messages(),
+          'messages_number' => get_messages_number($_SESSION['user']->getId()),
+          'page_number' => get_pages_number($_REQUEST['key']),
+          'page_header' => get_page_header(),
+          ]
+      );
         break;
     case 'edit_user_message':
-        include 'template/change_message.html';
+//        include 'template/change_message.html';
+      _template('change_message');
         break;
     case 'edit_message':
         include 'scripts/change.message.php';
+        break;
+    case 'delete_image':
+        include 'scripts/delete_img.php';
+        _template('change_message');
         break;
     default:
         if (empty($_SESSION['user'])) {
@@ -52,6 +65,9 @@ switch ($action) {
              'messages',
              [
                'message_list' => array_part_of_user_messages(),
+               'messages_number' => get_messages_number($_SESSION['user']->getId()),
+               'page_number' => get_pages_number($_SESSION['user']->getId()),
+               'page_header' => get_page_header(),
              ]
            );
 //            include 'template/messages.html';

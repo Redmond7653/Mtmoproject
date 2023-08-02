@@ -7,7 +7,7 @@ class Image
 {
  private $img;
 
-     public function image_save($id) {
+     public function image_save($id = NULL, $message_id = NULL) {
          $user_directory = $_SESSION['user']->getId();
          $target_directory = "images/".$user_directory."/";
          $img_directory = "images/";
@@ -49,12 +49,14 @@ class Image
                      $path_image = "/". $target_directory . $target_file;
 
                      $db = new Db();
-
-                     $result = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$id' ORDER BY `id` DESC LIMIT 1");
-
-                     $row_message = $result->fetch_assoc();
-
-                     $message_id = $row_message['id'];
+                     
+                      if (!is_null($id)) {
+                        $result = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$id' ORDER BY `id` DESC LIMIT 1");
+                        
+                        $row_message = $result->fetch_assoc();
+                        
+                        $message_id = $row_message['id'];
+                      }
 
                      $all_images_array = $db->query("INSERT INTO `images` (`img`, `message_id`) VALUES ('$path_image', '$message_id')" );
 
@@ -68,4 +70,6 @@ class Image
 
          }
      }
+     
+     
 }

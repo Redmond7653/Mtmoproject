@@ -2,7 +2,8 @@
 
 use MyClasses\Template;
 if (!isset($_POST['email'])) {
-    include 'template/register.html';
+//    include 'template/register.html';
+  _template('register');
     return;
 }
 
@@ -43,6 +44,7 @@ if ($user_exist) {
 }
 
 
-$template = new Template();
-$template->include('template/auth.html',$user_array_messages, $page_number, $user_name);
+//$template = new Template();
+//$template->include('template/auth.html',$user_array_messages, $page_number, $user_name);
 //$template->first_line('template/auth,html');
+_template('auth');

@@ -128,7 +128,7 @@ switch ($action) {
     case 'delete_img':
         $user_message_id = $_REQUEST['message_id'];
         $user_message_image = $_REQUEST['message_img'];
-        include 'scripts/delete_img.php';
+        include 'scripts/delete_img_old.php';
         break;
 
     default:

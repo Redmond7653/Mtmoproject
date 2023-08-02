@@ -55,5 +55,13 @@ $_SESSION['user'] = $user;
 //require_once 'tools.php';
 //include 'template/messages.html';
 
-$template = new Template();
-$template->include('template/messages.html',$user_array_messages, $page_number, $user_name);
+//$template = new Template();
+//$template->include('template/messages.html',$user_array_messages, $page_number, $user_name);
+_template(
+  'messages', [
+    'message_list' => array_part_of_user_messages(),
+    'messages_number' => get_messages_number($_SESSION['user']->getId()),
+    'page_number' => get_pages_number($_SESSION['user']->getId()),
+    'page_header' => get_page_header(),
+    ]
+);

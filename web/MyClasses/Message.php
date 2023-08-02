@@ -11,6 +11,8 @@ class Message
     private $user_id;
 
     private $part_of_messages;
+    
+    private $data_array;
 
     public function save_message($message, $user_id)
     {
@@ -37,7 +39,7 @@ class Message
 
         $db = new Db();
         $page = 1;
-        $limit = 5;
+        $limit = 10;
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
@@ -61,5 +63,27 @@ class Message
 
     public function getId() {
         return $this->user_id;
+    }
+    
+    public function load_data_message($message_id) {
+      $db = new Db();
+      
+      $result = $db->query("SELECT * FROM `messages` WHERE `id` = '$message_id'");
+      $table_message_row = $result->fetch_assoc();
+      $result1 = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'");
+      $table_image_rows = $result1->fetch_all(MYSQLI_ASSOC);
+      $this->data_array = [];
+      foreach ($table_image_rows as  $table_image_row) {
+        $image_key = $table_image_row['id'];
+        $image_item = $table_image_row['img'];
+        $this->data_array['img'][$image_key] = $image_item;
+      }
+      
+      $this->data_array['message'] = $table_message_row['message'];
+      
+    }
+    
+    public function getUserArray() {
+      return $this->data_array;
     }
 }

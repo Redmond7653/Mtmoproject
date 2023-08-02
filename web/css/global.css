@@ -3,22 +3,35 @@ body {
     background-color: #00bcd440;
 }
 
-.user_message {
+.column {
+    float: left;
+    width: 33.33%;
+    border: red 1px;
+    align-content: center;
+    border-style: dotted;
+}
+
+.row {
+    display: flex;
+}
+
+.message {
+    border: solid 1px;
     padding: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
-.user_img {
-    display: inline-block;
-    max-width: 200px;
-    max-height: 200px;
-    padding: 10px;
+.header_first_column {
+    text-align: center;
+    font-weight: bold;
 }
 
-.user_img img {
-    max-width: 100%; height:auto;
-    border: solid 2px;
+.third_column {
+    text-align: center;
 }
 
-.user_message_field {
-    background-color: #ffeb3b33;
+.page {
+    display: flex;
+    flex-wrap: wrap;
 }

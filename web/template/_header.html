@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Тест</title>
+    <link rel="stylesheet" href="../css/global.css">
 </head>
 <body>
 <div>Привіт <?=$_SESSION['user']->getName();?></div>
@@ -10,4 +11,4 @@
 <form action="../index.php" method="post" style="display: inline-block">
   <input type="hidden" name="action" value="logout">
   <input type="submit" name="submit" id="submit" value="Exit">
-</form><br>
+</form>

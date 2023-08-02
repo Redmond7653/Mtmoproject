@@ -11,7 +11,7 @@ function array_part_of_user_messages() {
   if ($_SESSION['user']) {
     
     $show_part_of_messages = new Message();
-    $user_array_messages = $show_part_of_messages->show_current_user_messages($_SESSION['user']->getId()); // $olsdjfgoljnsgrouyt83745683475
+    $user_array_messages = $show_part_of_messages->show_current_user_messages($_REQUEST['key']); // $olsdjfgoljnsgrouyt83745683475
     foreach ($user_array_messages as $key => $message) {
       $user_array_messages[$key]['image_src'] = get_image_for_message($message['id']);
     }
@@ -21,10 +21,10 @@ function array_part_of_user_messages() {
   return [];
 }
 
-function part_of_user_messages() {
-  $template = new Template();
-  $template->include('template/one_message.html');
-}
+//function part_of_user_messages() {
+//  $template = new Template();
+//  $template->include('template/one_message.html');
+//}
 
   function _template($file, $render = []) {
     $template = new Template();
@@ -75,10 +75,42 @@ function get_image_for_message($message_id) {
 
     $result = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'");
 
-    $image_array = $result->fetch_assoc();
-
-    $image_path = $image_array['img'];
+    $image_arrays = $result->fetch_all(MYSQLI_ASSOC);
+    foreach ($image_arrays as $image_array ) {
+      $image_path[] = $image_array['img'];
+    }
     return $image_path;
 
 }
+
+function load_message_for_edit($id) {
+  $edit = new Message();
+  $edit->load_data_message($id);
+  $data = $edit->getUserArray();
+  return $data['message'];
+}
+  
+function load_image_for_edit($id) {
+    $edit = new Message();
+    $edit->load_data_message($id);
+    $data = $edit->getUserArray();
+    
+    return $data['img'];
+}
+
+function all_users() {
+  $db = new Db();
+  
+  $result = $db->query("SELECT * FROM `users`");
+  $users_array = $result->fetch_all(MYSQLI_ASSOC);
+  $user_login_array = [];
+  foreach ($users_array as $user_array) {
+    $key_id = $user_array['id'];
+    $user_login_array[$key_id] = $user_array['login'];
+  }
+  return $user_login_array;
+}
+
+
+
 

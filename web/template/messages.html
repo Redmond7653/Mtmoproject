@@ -1,42 +1,58 @@
 <?php _template('_header'); ?>
 
-
-
-  <div>Total <?=get_messages_number($_SESSION['user']->getId())?> messages</div>
-  <div>
-    <div style="display: block">
-      <div><?=get_page_header()?></div>
-
-      <div>
-        <?php if(is_array($render['message_list'])) foreach ($render['message_list'] as $message) : ?>
-          
-          <?php _template('one_message', $message)?>
-        <?php endforeach; ?>
-      </div>
-
-    </div>
-  </div>
-  <div style="display: flex">
-    <?php for ($h = 1; $h <= get_pages_number($_SESSION['user']->getId()); $h++) : ?>
-      <div >
-        <div style="padding: 3px">
+<div class="row">
+  <div class="column first_column">
+    <div class="header_first_column">Users</div>
+      <?php foreach (all_users() as $key => $user_login) :?>
+        <div>
           <form action="/index.php" method="post">
-            <input type="hidden" name="page" value="<?=$h?>">
-            <p><input type="submit" value="page <?=$h?>"/></p>
+            <input type="hidden" name="key" value="<?=$key?>">
+            <p><input type="submit" value="<?=$user_login?>"/></p>
           </form>
         </div>
+      <?php endforeach; ?>
+  </div>
+  <div class="column second_column">
+    
+<!--    <div>Total --><?php //=$render['messages_number']?><!-- messages</div>-->
+      <div>
+        <div style="display: block">
+          <div><?=$render['page_header']?></div>
+          
+          <div>
+            <?php if(is_array($render['message_list'])) foreach ($render['message_list'] as $message) : ?>
+              
+              <?php _template('one_message', $message)?>
+            <?php endforeach; ?>
+          </div>
+        
+        </div>
       </div>
-    <?php endfor; ?>
+      <div class="page">
+        <?php for ($h = 1; $h <= $render['page_number']; $h++) : ?>
+          <div>
+            <div style="padding: 3px">
+              <form action="/index.php" method="post">
+                <input type="hidden" name="page" value="<?=$h?>">
+                <p><input type="submit" value="page <?=$h?>"/></p>
+              </form>
+            </div>
+          </div>
+        <?php endfor; ?>
+      </div>
   </div>
+  <div class="column third_column">TEST</div>
+  
+</div>
 
-  <div>
-    <form action="/index.php" method="post" enctype="multipart/form-data">
-      <input type="hidden" name="action" value="message">
-      <textarea name="message" placeholder="Повідомлення"></textarea>
-      <input type="file" name="fileUpload[]" id="fileUpload">
-      <p><input type="submit" value="Надіслати" name="submit"/></p>
-    </form>
-  </div>
+<div class="send_new_message">
+  <form action="/index.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="message">
+    <textarea name="message" placeholder="Повідомлення"></textarea>
+    <input type="file" name="fileUpload[]" id="fileUpload" multiple>
+    <p><input type="submit" value="Надіслати" name="submit"/></p>
+  </form>
+</div>
 
 <?php _template('_footer');?>
 

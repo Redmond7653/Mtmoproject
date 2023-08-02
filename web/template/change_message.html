@@ -1,19 +1,25 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
-<body>
-<form action="index.php" method="post">
+<?php _template('_header'); ?>
+
+<form action="index.php" method="post" enctype="multipart/form-data">
     <input type="hidden" name="action" value="edit_message">
     <input type="hidden" name="id" value="<?=$_REQUEST['message_id']?>">
-    <textarea name="message" placeholder="Повідомлення"/><?=$_REQUEST['user_message'] ?? ''?></textarea>
+    <textarea name="message" placeholder="Повідомлення"/><?=load_message_for_edit($_REQUEST['message_id'])?></textarea>
+    <input type="file" name="fileUpload[]" id="fileUpload" multiple>
     <input type="submit" name="submit" value="Поміняти повідомлення">
 </form>
+<?php foreach (load_image_for_edit($_REQUEST['message_id']) as $key => $image) : ?>
+  <div>
+    <img src="<?=$image?>" width="150" height="150"></div>
+    <form action="index.php" method="post">
+      <input type="hidden" name="action" value="delete_image">
+      <input type="hidden" name="message_id" value="<?=$_REQUEST['message_id']?>">
+      <input type="hidden" name="image_id" value="<?=$key?>">
+      <input type="submit" value="delete" name="submit">
+    </form>
+<?php endforeach; ?>
 <form action="index.php" method="post">
     <input type="hidden" name="action" value="main">
     <input type="submit" value="Повернутися" name="submit">
 </form>
-</body>
-</html>
+
+<?php _template('_footer');?>
