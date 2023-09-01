@@ -1,0 +1,43 @@
+
+<?php _template('_header'); ?>
+
+<div class="change_user_data">
+  
+  <div class="form_user_data">
+    <div>Зміна ваших даних</div>
+    <div>
+      <form action="../index.php" method="post">
+        <input type="hidden" name="action" value="change_confirm">
+        <input type="text" class="form-control" name="new_email" value="<?=$_SESSION['user']->getEmail()?>" placeholder="Введіть новий email"><br>
+        <input type="text" class="form-control" name="new_login" value="<?=$_SESSION['user']->getName()?>" placeholder="Введіть новий логін"><br>
+        <input type="text" class="form-control" name="current_pass" id="current_pass" placeholder="Введіть теперішній пароль"><br>
+        <input type="text" class="form-control" name="new_pass" id="new_pass" placeholder="Введіть новий пароль"><br>
+        <input type="text" class="form-control" name="confirm_pass" id="confirm_pass" placeholder="Підтвердіть новий пароль"><br>
+        <input type="submit" name="submit" value="Змінити">
+      </form>
+    </div>
+  </div>
+  
+  
+  
+<!--  -->
+<!--  <div class="form_user_data">-->
+<!--    <div>Зміна вашого пароля</div>-->
+<!--    <form action="../index.php" method="post">-->
+<!--      <input type="hidden" name="action" value="change_pass_confirm">-->
+<!--      -->
+<!--    </form>-->
+<!--  </div>-->
+<!--  -->
+<!--  <div>-->
+<!--    <form action="../index.php" method="post">-->
+<!--      <input type="hidden" name="action" value="change_confirm">-->
+<!--      <input type="submit" name="submit" value="Змінити">-->
+<!--    </form>-->
+<!--  </div>-->
+  
+</div>
+
+<div>
+  <?php _template('default'); ?>
+</div>

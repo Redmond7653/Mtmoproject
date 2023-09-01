@@ -42,6 +42,7 @@ switch ($action) {
           'messages_number' => get_messages_number($_SESSION['user']->getId()),
           'page_number' => get_pages_number($_REQUEST['key']),
           'page_header' => get_page_header(),
+          'message_preview' => one_message($_REQUEST['message_id'])
           ]
       );
         break;
@@ -56,6 +57,12 @@ switch ($action) {
         include 'scripts/delete_img.php';
         _template('change_message');
         break;
+    case 'change_user_data':
+        _template('change_user_data');
+        break;
+    case 'change_confirm':
+        include 'scripts/change_data.php';
+        break;
     default:
         if (empty($_SESSION['user'])) {
             include 'template/auth.html';
@@ -66,8 +73,10 @@ switch ($action) {
              [
                'message_list' => array_part_of_user_messages(),
                'messages_number' => get_messages_number($_SESSION['user']->getId()),
-               'page_number' => get_pages_number($_SESSION['user']->getId()),
+               'page_number' => get_pages_number($_REQUEST['key']),
                'page_header' => get_page_header(),
+               'user_id' => $_REQUEST['key'],
+               'message_preview' => one_message($_REQUEST['message_id'])
              ]
            );
 //            include 'template/messages.html';

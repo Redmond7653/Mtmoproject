@@ -86,4 +86,22 @@ class Message
     public function getUserArray() {
       return $this->data_array;
     }
+    
+    public function save_hashtags($hashtags, $id) {
+      $db = new Db();
+      
+      $result = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$id' ORDER BY `id` DESC LIMIT 1");
+      $user_last_message_array = $result->fetch_assoc();
+      
+      $id_message = $user_last_message_array['id'];
+      
+      $hashtags_array = explode(',', $hashtags);
+      
+      if (!empty($hashtags)) {
+        foreach ($hashtags_array as $hashtag) {
+          $hashtag = str_replace(' ', '', $hashtag);
+          $hashtags_data = $db->query("INSERT INTO `hashtags` (`hashtag`, `message_id`) VALUES ('$hashtag','$id_message')");
+        }
+      }
+    }
 }

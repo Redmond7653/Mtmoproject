@@ -13,7 +13,7 @@ class User
     private $id;
 
     private $show_on_main_page_messages;
-    public function load($login, $pass)
+    public function register($login, $pass)
     {
         $db = new Db();
 //        include "connect.php";
@@ -30,7 +30,7 @@ class User
         $this->id = $user_data['id'];
     }
 
-    public function loaduser($id)
+    public function load($id)
     {
 //        include "connect.php";
         $db = new Db();
@@ -95,7 +95,6 @@ class User
 //        include "connect.php";
         $db = new Db();
         $new_pass = $db->escape_string($new_pass);
-        $new_pass = md5($new_pass);
         $this->pass = $new_pass;
         $db->query("UPDATE `users` SET `pass` = '$this->pass' WHERE `id` = '$this->id'");
     }

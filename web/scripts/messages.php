@@ -6,9 +6,11 @@ use MyClasses\Template;
 
 $user_id = $_SESSION['user']->getId();
 $message = $_POST['message'];
+$hashtags = $_POST['hashtags'];
 
 $user_message = new Message;
 $user_message->save_message($message,$user_id);
+$user_message->save_hashtags($hashtags, $user_id);
 
 $user_img = new Image;
 $user_img->image_save($_SESSION['user']->getId());

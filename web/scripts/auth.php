@@ -34,7 +34,7 @@ $pass = md5($pass."Russia_is_a_terrorist");
 
 
 $user = new User;
-$user->load($login, $pass);
+$user->register($login, $pass);
 
 
 

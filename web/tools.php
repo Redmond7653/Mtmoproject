@@ -111,6 +111,43 @@ function all_users() {
   return $user_login_array;
 }
 
+function one_message($message_id) {
+  $db = new Db();
+  $one_message_array = [];
+  $result_message = $db->query("SELECT * FROM `messages` WHERE `id` = '$message_id'");
+  $result_image = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'");
+  
+  $message_array = $result_message->fetch_assoc();
+  $messages_image = $result_image->fetch_all(MYSQLI_ASSOC);
+  
+  $one_message_array['message'] = $message_array['message'];
+  foreach ($messages_image as $message_image) {
+    $id = $message_image['id'];
+    $one_message_array['img'][$id] = $message_image['img'];
+  }
+  
+  return $one_message_array;
+}
 
+function show_hashtags($message_id) {
+  $db = new Db();
+  
+  $hashtags = [];
+  $result_hashtags = $db->query("SELECT * FROM `hashtags` WHERE `message_id` = '$message_id'");
+  
+  $hashtags_arrays = $result_hashtags->fetch_all(MYSQLI_ASSOC);
+  
+  $special_character = '#';
+  foreach ($hashtags_arrays as $hashtags_array) {
+    if (mb_substr($hashtags_array['hashtag'],0,1) == '#') {
+      $hashtags[] = $hashtags_array['hashtag'];
+    } else {
+      $hashtags_array['hashtag'] = $special_character.$hashtags_array['hashtag'];
+      $hashtags[] = $hashtags_array['hashtag'];
+    }
+//    $test = mb_substr($hashtags_array['hashtag'],0,1);
+  }
+  return $hashtags;
+}
 
 

@@ -25,7 +25,7 @@ class Image
                     $i++;
              }
 
-             if (isset($_POST["submit"])) {
+             if (isset($_POST["submit"]) && !empty($fileUploadName)) {
                  $check = getimagesize($_FILES["fileUpload"]["tmp_name"][$key]);
                  if ($check !== false) {
                      echo "File is an image - " . $target_file . ".";
@@ -37,7 +37,7 @@ class Image
              }
 
 
-             if ($uploadOk == 0) {
+             if ($uploadOk == 0 && isset($_POST['submit'])) {
                  echo "Sorry, your file was not uploaded.";
              } else {
                  // Створюю папку "250"
@@ -62,8 +62,6 @@ class Image
 
                      echo "The file " . htmlspecialchars(basename($fileUploadName)) . " has been uploaded.";
 
-                 } else {
-                     echo "Sorry, there was an error uploading your file.";
                  }
 
              }

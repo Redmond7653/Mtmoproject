@@ -1,88 +1,69 @@
 <?php
-
+  
+  use MyClasses\Db;
+  use MyClasses\User;
+  use MyClasses\Template;
+  
 $current_pass = $_POST['current_pass'] ?? '';
 $new_pass = $_POST['new_pass'] ?? '';
 $confirm_pass = $_POST['confirm_pass'] ?? '';
-$current_pass2 = md5pass($current_pass);
-//if (!empty($_POST)) {
-//    $all_ok = TRUE;
-//    if (strlen($current_pass) < 5 || strlen($current_pass) > 100) {
-//        echo "Недопустима довжина теперішнього пароля<br>";
-//        $all_ok = FALSE;
-//    }
-//    if (strlen($new_pass) < 2 || strlen($new_pass) > 8) {
-//        echo "Недопустима довжина нового пароля<br>";
-//        $all_ok = FALSE;
-//    }
-//    if (!$all_ok) {
-//        exit;
-//    }
-//}
-// @TODO: save the new passwornd
-// @TODO: verify the old password
-// @TODO: verify new passwords
-$db = db_connect();
+$current_pass2 = md5($current_pass."Russia_is_a_terrorist");
 
-if (isset($_POST['new_pass'])) { // /* form_CHANGE_PASS_is_sent*/
+$db = new Db();
+
+
+if (isset($_POST['new_pass'])) {
     if (!empty($_POST)) {
         $all_ok = TRUE;
         if (strlen($current_pass) < 5 || strlen($current_pass) > 100) {
             echo "Недопустима довжина теперішнього пароля<br>";
-            $all_ok = FALSE;
+            $all_ok = false;
         }
         if (strlen($new_pass) < 2 || strlen($new_pass) > 8) {
             echo "Недопустима довжина нового пароля<br>";
-            $all_ok = FALSE;
+            $all_ok = false;
         }
         if (!$all_ok) {
             exit;
         }
     }
 
-    $pass_changed = FALSE;
+    $pass_changed = false;
 
-    if ($result = $db->query("SELECT * FROM `users` WHERE `id` = {$_SESSION['user']['id']} AND `pass` = '$current_pass2'")) {
-        $user = $result->fetch_assoc();
-        if ($new_pass == $confirm_pass) {
-            $new_pass = md5pass($new_pass);
-            $pass_changed = $db->query("UPDATE `users` SET `pass` = '$new_pass' WHERE `id` = {$_SESSION['user']['id']}");
-            db_error(__LINE__);
+    if ($result = $db->query("SELECT * FROM `users` WHERE `id` = '{$_SESSION['user']->getId()}' AND `pass` = '$current_pass2'")) {
+        $user_pass = $result->fetch_all(MYSQLI_ASSOC);
+        if ($new_pass == $confirm_pass && count($user_pass) !== 0) {
+            $new_pass = md5($new_pass."Russia_is_a_terrorist");
+          $user = new User;
+          $user->load($_SESSION['user']->getId());
+          $user->setPass($new_pass);
         } else {
             echo 'Паролі не співпадають';
         }
 
 
         $all_ok = TRUE;
-        if (count($user) == 0) {
+        if (count($user_pass) == 0) {
             echo "Теперішній пароль введенний неправильно";
-            $all_ok = FALSE;
+            $all_ok = false;
         }
         if (!$all_ok) {
             exit;
         }
-
-
-//    if (saved) {
-//        $pass_changed = TRUE;
-//    }
-
-
-        if ($pass_changed) {
-//            include 'template/password_saving_confirmed.html';
-            $_SESSION['render'][] = [
-                '#template' => 'password_saving_confirmed',
-            ];
-
-
+        
+        if ($user_pass) {
+            _template('password_saving_confirmed');
         }
     }
 }
+
 else {
-//    include 'template/change_pass.html';
-    $_SESSION['render'][] = [
-        '#template' => 'change_pass',
-    ];
+  _template('change_pass');
 }
 
+// To do: Create: change user login
+// To do: Create: change user email with validation
+// To do: Create method: "create_user" in class User (file User.php)
+// To do: Change methods naming to be a more appropriate in class User (file User.php)
+// To do: After create method: "create_user" in class User - recreate with it changing pass in file: "change_pass.php"
 
-$db->close();

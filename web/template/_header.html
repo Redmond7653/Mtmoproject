@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <title>Тест</title>
     <link rel="stylesheet" href="../css/global.css">
+  <script
+    src="https://code.jquery.com/jquery-3.7.0.js"
+    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+    crossorigin="anonymous"></script>
 </head>
 <body>
 <div>Привіт <?=$_SESSION['user']->getName();?></div>
@@ -12,3 +16,5 @@
   <input type="hidden" name="action" value="logout">
   <input type="submit" name="submit" id="submit" value="Exit">
 </form>
+
+

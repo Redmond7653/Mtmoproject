@@ -13,14 +13,9 @@ body {
 
 .row {
     display: flex;
+    position: relative;
 }
 
-.message {
-    border: solid 1px;
-    padding: 5px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
 
 .header_first_column {
     text-align: center;
@@ -34,4 +29,110 @@ body {
 .page {
     display: flex;
     flex-wrap: wrap;
+}
+
+
+
+
+a.mycoollink {
+    /* background: #faf; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /* opacity: 0.3; */
+    font-size: 0;
+}
+
+.message {
+    position: relative;
+    background-color: #faf;
+    transition: background-color 1s ease-out 100ms;
+}
+.preview {
+    position: relative;
+}
+
+.message:hover {
+    background: red;
+}
+/*.preview:hover {*/
+/*    background-color: yellow;*/
+/*}*/
+.message_preview {
+    padding: 15px;
+    font-size: 25px;
+    font-weight: bold;
+}
+.message-container {
+    border: solid 1px;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+/*.row:nth-child(3) div:hover{*/
+/*    background-color: yellow;*/
+/*}*/
+
+.user_list {
+    text-align: center;
+}
+.user_list a {
+    text-decoration: none;
+}
+
+.chosen_user a:visited {
+    color: #21cd21;
+    border: solid 2px;
+}
+
+.chosen_user a {
+    border: solid 0.2rem;
+    padding: 3px;
+}
+
+.user_name {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+
+.not_chosen_user a:link {
+    color: #f33d3d;
+}
+
+.not_chosen_user a:hover {
+    border: solid 0.2rem;
+    padding: 3px;
+}
+
+.not_chosen_user a:visited {
+    color: #f33d3d;
+}
+
+.change_user_data {
+    display: flex;
+}
+
+.form_user_data {
+    padding-right: 15px;
+    padding-top: 15px;
+}
+
+.hashtag {
+    font-size: 12px;
+    margin-right: 3px;
+    margin-left: 3px;
+    color: blue;
+
+}
+
+.hashtags {
+    display: flex;
+}
+
+.message_text {
+    font-size: 20px;
 }

@@ -58,16 +58,15 @@ foreach ($reader->getSheetIterator() as $sheet) {
                             if ($comment == "Ні") {
                                 break;
                             }
+                            //* на 9 пакет замінити весь if, location в кінці файлу, закоментований if
                             if (!empty($tmp_cells[59])) {
                                 $found = false;
                                 foreach ($services as $number_of_service) {
-                                    $check = '9.';
-                                    $pos = strpos($number_of_service, $check);
-                                    if ($pos === 0) {
+                                    
                                         $tableColumns[$number_of_service] = $number_of_service;
                                         $data[$doctorName][$number_of_service] = $data[$doctorName][$number_of_service] + 1;
                                         $found = true;
-                                    }
+                                    
                                 }
                                 break;
                             }
@@ -308,3 +307,18 @@ $reader->close();
 //} else {
 //    $var = "Другое значение";
 //}
+
+
+//  if (!empty($tmp_cells[59])) {
+//    $found = false;
+//    foreach ($services as $number_of_service) {
+//      $check = '9.';
+//      $pos = strpos($number_of_service, $check);
+//      if ($pos === 0) {
+//        $tableColumns[$number_of_service] = $number_of_service;
+//        $data[$doctorName][$number_of_service] = $data[$doctorName][$number_of_service] + 1;
+//        $found = true;
+//      }
+//    }
+//    break;
+//  }

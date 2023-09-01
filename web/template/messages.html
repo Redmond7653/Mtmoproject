@@ -1,19 +1,38 @@
 <?php _template('_header'); ?>
 
+<form action="../index.php" method="post" style="display: inline-block">
+  <input type="hidden" name="action" value="change_user_data">
+  <input type="submit" name="submit" id="submit" value="Зміна даних">
+</form>
+
+
 <div class="row">
   <div class="column first_column">
     <div class="header_first_column">Users</div>
+    <div>
       <?php foreach (all_users() as $key => $user_login) :?>
-        <div>
-          <form action="/index.php" method="post">
-            <input type="hidden" name="key" value="<?=$key?>">
-            <p><input type="submit" value="<?=$user_login?>"/></p>
-          </form>
+        <div class="user_list">
+          <?php if ($_GET['key'] == $key): ?>
+            <div class="user_name chosen_user">
+              <form action="/index.php" method="get">
+                <a href="index.php?key=<?=$key?>"><?=$user_login?></a>
+              </form>
+            </div>
+          <?php else: ?>
+            <div class="user_name not_chosen_user">
+              <form action="/index.php" method="get">
+                <a href="index.php?key=<?=$key?>"><?=$user_login?></a>
+              </form>
+            </div>
+          <?php endif; ?>
+          
         </div>
       <?php endforeach; ?>
+    </div>
   </div>
+  
+  
   <div class="column second_column">
-    
 <!--    <div>Total --><?php //=$render['messages_number']?><!-- messages</div>-->
       <div>
         <div style="display: block">
@@ -32,8 +51,9 @@
         <?php for ($h = 1; $h <= $render['page_number']; $h++) : ?>
           <div>
             <div style="padding: 3px">
-              <form action="/index.php" method="post">
+              <form action="../index.php" method="get">
                 <input type="hidden" name="page" value="<?=$h?>">
+                <input type="hidden" name="key" value="<?=$_REQUEST['key']?>">
                 <p><input type="submit" value="page <?=$h?>"/></p>
               </form>
             </div>
@@ -41,17 +61,53 @@
         <?php endfor; ?>
       </div>
   </div>
-  <div class="column third_column">TEST</div>
+  
+  
+  <div class="column third_column" id="target">
+    <div><?php _template('one_message_preview', $render['message_preview']);?></div>
+  </div>
+  
   
 </div>
 
 <div class="send_new_message">
   <form action="/index.php" method="post" enctype="multipart/form-data">
     <input type="hidden" name="action" value="message">
-    <textarea name="message" placeholder="Повідомлення"></textarea>
+    <div>
+      <textarea name="message" placeholder="Повідомлення"></textarea>
+    </div>
+    <div id="add">
+      <div id="hashtag">
+        <input type="text" name="hashtags" placeholder="Введіть hashtags"></>
+      </div>
+    </div>
+    <a href="javascript:void(0);" onClick="add_field();">Click to add another hashtag</a><br />
+<!--    <input type="submit">-->
     <input type="file" name="fileUpload[]" id="fileUpload" multiple>
     <p><input type="submit" value="Надіслати" name="submit"/></p>
   </form>
+</div>
+
+
+<script type="text/javascript">
+    function add_field(){
+        var max = 5;
+        var cont = document.getElementById('add');
+        var number_fields = cont.getElementsByTagName("input").length;
+        if (number_fields < max) {
+            var div1 = document.createElement('div');
+            div1.innerHTML = document.getElementById('another_input').innerHTML;
+            document.getElementById('add').appendChild(div1);
+        } else {
+            alert("You reached the maximum number of fields that can be added in one message!");
+        }
+    }
+</script>
+
+<div id="another_input" style="display:none">
+  <div id="hashtag">
+    <input type="text" name="hashtags" placeholder="Введіть hashtags"></>
+</div>
 </div>
 
 <?php _template('_footer');?>
