@@ -63,6 +63,9 @@ switch ($action) {
     case 'change_confirm':
         include 'scripts/change_data.php';
         break;
+    case 'message_form':
+        _template('message_form');
+        break;
     default:
         if (empty($_SESSION['user'])) {
             include 'template/auth.html';

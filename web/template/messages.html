@@ -5,6 +5,12 @@
   <input type="submit" name="submit" id="submit" value="Зміна даних">
 </form>
 
+<div class="form_send_message">
+  <form action='/index.php' method='post'>
+    <input type='hidden' name='action' value='message_form'>
+    <input type='submit' name='submit' value='Send message'>
+  </form>
+</div>
 
 <div class="row">
   <div class="column first_column">
@@ -35,7 +41,7 @@
   <div class="column second_column">
 <!--    <div>Total --><?php //=$render['messages_number']?><!-- messages</div>-->
       <div>
-        <div style="display: block">
+        <div class="second_column_content" style="display: block">
           <div><?=$render['page_header']?></div>
           
           <div>
@@ -70,45 +76,6 @@
   
 </div>
 
-<div class="send_new_message">
-  <form action="/index.php" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="action" value="message">
-    <div>
-      <textarea name="message" placeholder="Повідомлення"></textarea>
-    </div>
-    <div id="add">
-      <div id="hashtag">
-        <input type="text" name="hashtags" placeholder="Введіть hashtags"></>
-      </div>
-    </div>
-    <a href="javascript:void(0);" onClick="add_field();">Click to add another hashtag</a><br />
-<!--    <input type="submit">-->
-    <input type="file" name="fileUpload[]" id="fileUpload" multiple>
-    <p><input type="submit" value="Надіслати" name="submit"/></p>
-  </form>
-</div>
-
-
-<script type="text/javascript">
-    function add_field(){
-        var max = 5;
-        var cont = document.getElementById('add');
-        var number_fields = cont.getElementsByTagName("input").length;
-        if (number_fields < max) {
-            var div1 = document.createElement('div');
-            div1.innerHTML = document.getElementById('another_input').innerHTML;
-            document.getElementById('add').appendChild(div1);
-        } else {
-            alert("You reached the maximum number of fields that can be added in one message!");
-        }
-    }
-</script>
-
-<div id="another_input" style="display:none">
-  <div id="hashtag">
-    <input type="text" name="hashtags" placeholder="Введіть hashtags"></>
-</div>
-</div>
 
 <?php _template('_footer');?>
 

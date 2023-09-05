@@ -1,0 +1,48 @@
+
+<?php _template('_header'); ?>
+
+<?php _template('default'); ?>
+
+
+<h1>Надішліть своє повідомлення</h1>
+<div class="send_new_message">
+  <form action="/index.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="message">
+    <div>
+      <textarea name="message" placeholder="Повідомлення"></textarea>
+    </div>
+    <div id="add">
+      <div id="hashtag">
+        <input type="text" name="hashtags" placeholder="Введіть hashtags"></>
+    </div>
+</div>
+<a href="javascript:void(0);" onClick="add_field();">Click to add another hashtag</a><br />
+<!--    <input type="submit">-->
+<input type="file" name="fileUpload[]" id="fileUpload" multiple>
+<p><input type="submit" value="Надіслати" name="submit"/></p>
+</form>
+</div>
+
+
+<script type="text/javascript">
+    function add_field(){
+        const max = 5;
+        const cont = document.getElementById('add');
+        // var number_fields = cont.getElementsByTagName("input").length;
+        if (cont.getElementsByTagName("input").length < max) {
+            const div1 = document.createElement('div');
+            div1.innerHTML = document.getElementById('another_input').innerHTML;
+            document.getElementById('add').appendChild(div1);
+        } else {
+            alert("You reached the maximum number of fields that can be added in one message!");
+        }
+    }
+</script>
+
+<div id="another_input" style="display:none">
+  <div id="hashtag">
+    <input type="text" name="hashtags" placeholder="Введіть hashtags"></>
+</div>
+</div>
+
+<?php _template('_footer');?>

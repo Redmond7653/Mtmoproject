@@ -5,10 +5,16 @@ body {
 
 .column {
     float: left;
-    width: 33.33%;
-    border: red 1px;
+    width: 33%;
+    border: red 3.5px;
     align-content: center;
-    border-style: dotted;
+    border-style: dashed;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.second_column_content {
+    padding: 5px;
 }
 
 .row {
@@ -135,4 +141,9 @@ a.mycoollink {
 
 .message_text {
     font-size: 20px;
+}
+
+.form_send_message {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
