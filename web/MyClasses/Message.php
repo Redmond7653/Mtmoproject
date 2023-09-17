@@ -28,6 +28,16 @@ class Message
         $date = date('Y-m-d h:m:s');
 
         $db->query("INSERT INTO `messages`(`user_id`,`message`,`time`) VALUES ('$user_id','$message','$date')");
+        
+        if ($_REQUEST['send_reply_message']) {
+          $result = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$user_id' ORDER BY `id` DESC LIMIT 1");
+          
+          $last_message_created = $result->fetch_assoc();
+          
+          $id_new_message = $last_message_created['id'];
+          
+          $db->query("INSERT INTO `reply_messages`(`message_referred_to_id`, `reply_message_id`) VALUES ('{$_REQUEST['send_reply_message']}', '$id_new_message')");
+        }
 
 
         $this->message = $message;
@@ -95,13 +105,15 @@ class Message
       
       $id_message = $user_last_message_array['id'];
       
-      $hashtags_array = explode(',', $hashtags);
+//      $hashtags_array = explode(',', $hashtags);
       
-      if (!empty($hashtags)) {
-        foreach ($hashtags_array as $hashtag) {
-          $hashtag = str_replace(' ', '', $hashtag);
-          $hashtags_data = $db->query("INSERT INTO `hashtags` (`hashtag`, `message_id`) VALUES ('$hashtag','$id_message')");
+      
+        foreach ($hashtags as $hashtag) {
+          if (!empty($hashtag)) {
+//          $hashtag = str_replace(' ', '', $hashtag);
+            $hashtag = trim($hashtag);
+            $hashtags_data = $db->query("INSERT INTO `hashtags` (`hashtag`, `message_id`) VALUES ('$hashtag','$id_message')");
+          }
         }
       }
-    }
 }

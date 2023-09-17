@@ -48,14 +48,14 @@ switch ($action) {
         break;
     case 'edit_user_message':
 //        include 'template/change_message.html';
-      _template('change_message');
+      _template('change_or_send_message');
         break;
     case 'edit_message':
         include 'scripts/change.message.php';
         break;
     case 'delete_image':
         include 'scripts/delete_img.php';
-        _template('change_message');
+        _template('change_or_send_message');
         break;
     case 'change_user_data':
         _template('change_user_data');
@@ -63,8 +63,8 @@ switch ($action) {
     case 'change_confirm':
         include 'scripts/change_data.php';
         break;
-    case 'message_form':
-        _template('message_form');
+    case 'create_message':
+        _template('change_or_send_message');
         break;
     default:
         if (empty($_SESSION['user'])) {

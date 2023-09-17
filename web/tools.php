@@ -14,7 +14,9 @@ function array_part_of_user_messages() {
     $user_array_messages = $show_part_of_messages->show_current_user_messages($_REQUEST['key']); // $olsdjfgoljnsgrouyt83745683475
     foreach ($user_array_messages as $key => $message) {
       $user_array_messages[$key]['image_src'] = get_image_for_message($message['id']);
+      $user_array_messages[$key]['reply_check'] = check_for_reply_message($message['id']);
     }
+    
     
     return $user_array_messages;
   }
@@ -83,6 +85,20 @@ function get_image_for_message($message_id) {
 
 }
 
+function check_for_reply_message($message_id) {
+  $db = new Db();
+  
+  $result = $db->query("SELECT * FROM `reply_messages` WHERE `reply_message_id` = '$message_id'");
+  
+  $reply_array = $result->fetch_all(MYSQLI_ASSOC);
+  
+  if ($reply_array) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function load_message_for_edit($id) {
   $edit = new Message();
   $edit->load_data_message($id);
@@ -116,14 +132,19 @@ function one_message($message_id) {
   $one_message_array = [];
   $result_message = $db->query("SELECT * FROM `messages` WHERE `id` = '$message_id'");
   $result_image = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'");
+  $result_hashtags = $db->query("SELECT * FROM `hashtags` WHERE `message_id` = '$message_id'");
   
   $message_array = $result_message->fetch_assoc();
   $messages_image = $result_image->fetch_all(MYSQLI_ASSOC);
+  $messages_hashtags = $result_hashtags->fetch_all(MYSQLI_ASSOC);
   
   $one_message_array['message'] = $message_array['message'];
   foreach ($messages_image as $message_image) {
     $id = $message_image['id'];
     $one_message_array['img'][$id] = $message_image['img'];
+  }
+  foreach ($messages_hashtags as $message_hashtag) {
+    $one_message_array['hashtags'][] = $message_hashtag['hashtag'];
   }
   
   return $one_message_array;
@@ -150,4 +171,20 @@ function show_hashtags($message_id) {
   return $hashtags;
 }
 
+function load_hashtags_for_edit($id) {
+  $db = new Db();
+  
+  $hashtags = [];
+  $result = $db->query("SELECT * FROM `hashtags` WHERE `message_id` = '$id'");
+  
+  $hashtags_data_array = $result->fetch_all(MYSQLI_ASSOC);
+  
+  foreach ($hashtags_data_array as $hashtags_array) {
+    $hashtag_id = $hashtags_array['id'];
+    $hashtags[$hashtag_id] = $hashtags_array['hashtag'];
+  }
+  
+  return $hashtags;
+}
 
+//function

@@ -1,6 +1,11 @@
 <div class="preview">
   <div class="message_preview"><?=$render['message']?></div>
   <div>
+    <?php foreach (show_hashtags($_REQUEST['message_id']) as $hashtag) : ?>
+      <div class="hashtag_for_preview"><?=$hashtag?></div>
+    <?php endforeach;?>
+  </div>
+  <div>
     <?php if ((is_array($render['img']))) foreach ($render['img'] as $image) : ?>
         <img src="<?=$image?>" width="250" height="250">
     <?php endforeach;?>

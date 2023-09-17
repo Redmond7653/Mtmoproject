@@ -14,14 +14,6 @@
         <?php endif; ?>
       </div>
     
-  <!--  <div>-->
-  <!--    <form action='/index.php' method='post'>-->
-  <!--      <input type='hidden' name='action' value='edit_user_message'>-->
-  <!--      <input type='hidden' name='message_id' value='--><?php //=$render['id']?><!--'>-->
-  <!--      <input type='submit' name='submit' value='edit'>-->
-  <!--    </form>-->
-  <!--  </div>-->
-    
     <script>
         //$("div").on( "click", function() {
         //   $.get('index.php?message_id=<?php //=$render['id']?>//')
@@ -43,12 +35,24 @@
     
     <a class='mycoollink' href="index.php?key=<?=$render['user_id']?>&message_id=<?=$render['id']?>">OLOLO</a>
   </div>
+  
+  <?php if ($_GET['key'] == $_SESSION['user']->getId()): ?>
   <div class="message-actions">
   <!--  <a href="?action=edit_user_message&message_id=--><?php //=$render['id']?><!--" class="edit">Edit link</a>-->
     <form action='/index.php' method='post'>
       <input type='hidden' name='action' value='edit_user_message'>
       <input type='hidden' name='message_id' value='<?=$render['id']?>'>
+      <input type='hidden' name='edit_message' value='edit_message'>
       <input type='submit' name='submit' value='edit'>
     </form>
   </div>
+    <div>
+      <form action='/index.php' method='post'>
+        <input type='hidden' name='action' value='edit_user_message'>
+        <input type='hidden' name='reply_message_user_id' value="<?=$render['user_id']?>">
+        <input type='hidden' name='message_id' value='<?=$render['id']?>'>
+        <input type='submit' value='reply'>
+      </form>
+    </div>
+  <?php endif;?>
 </div>

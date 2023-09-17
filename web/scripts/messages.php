@@ -6,6 +6,7 @@ use MyClasses\Template;
 
 $user_id = $_SESSION['user']->getId();
 $message = $_POST['message'];
+
 $hashtags = $_POST['hashtags'];
 
 $user_message = new Message;

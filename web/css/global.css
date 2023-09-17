@@ -135,6 +135,14 @@ a.mycoollink {
 
 }
 
+.hashtag_for_preview {
+    font-size: 17px;
+    margin-right: 3px;
+    margin-left: 3px;
+    color: blue;
+
+}
+
 .hashtags {
     display: flex;
 }
@@ -146,4 +154,25 @@ a.mycoollink {
 .form_send_message {
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.hashtags_for_edit {
+    display: block;
+}
+
+.rmessage_content {
+    display: flex;
+}
+
+.rmessage_container {
+    width: max-content;
+    border: 1px solid;
+    padding: 3px;
+    margin-top: 3px;
+}
+
+.rmessage_to_this_user {
+    text-align: center;
+    padding: 5px;
+    font-size: 25px;
 }

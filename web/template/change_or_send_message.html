@@ -1,0 +1,173 @@
+<?php _template('_header'); ?>
+
+
+
+<!--  Begin editing user message-->
+<?php if ($_REQUEST['edit_message']) : ?>
+  
+  <div>
+    <form action="index.php" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="edit_message">
+      <input type="hidden" name="id" value="<?=$_REQUEST['message_id']?>">
+      <textarea name="message" placeholder="Повідомлення"/><?=load_message_for_edit($_REQUEST['message_id'])?></textarea>
+      <?php foreach (load_hashtags_for_edit($_REQUEST['message_id']) as $key => $hashtags) : ?>
+        <div class="hashtags_for_edit">
+          <input type="text" name="hashtags[<?=$key?>]" value="<?=$hashtags?>">
+        </div>
+      <?php endforeach; ?>
+      <input type="file" name="fileUpload[]" id="fileUpload" multiple>
+      <input type="submit" name="submit" value="Поміняти повідомлення">
+    </form>
+  </div>
+  
+  <?php if (!empty(load_image_for_edit($_REQUEST['message_id']))) : ?>
+    <?php foreach (load_image_for_edit($_REQUEST['message_id']) as $key => $image) : ?>
+      <div>
+        <img src="<?=$image?>" width="150" height="150"></div>
+      <form action="index.php" method="post">
+        <input type="hidden" name="action" value="delete_image">
+        <input type="hidden" name="message_id" value="<?=$_REQUEST['message_id']?>">
+        <input type="hidden" name="image_id" value="<?=$key?>">
+        <input type="submit" value="delete" name="submit">
+      </form>
+    <?php endforeach; ?>
+   <?php endif;?>
+  <form action="index.php" method="post">
+    <input type="hidden" name="action" value="main">
+    <input type="submit" value="Повернутися" name="submit">
+  </form>
+<!--  End editing user message-->
+
+
+
+<!--  Begin reply to user message-->
+<?php elseif($_REQUEST['reply_message_user_id']): ?>
+  
+  <div class="rmessage_container">
+    <div class="rmessage_to_this_user">Bodya</div>
+    <div class="rmessage_content">
+      <div>
+        <form action="index.php" method="post">
+          <input type="hidden" name="action" value="edit_message">
+          <input type="hidden" name="id" value="<?=$_REQUEST['message_id']?>">
+          <div class="rmessage"><?=load_message_for_edit($_REQUEST['message_id'])?></div>
+          <?php foreach (load_hashtags_for_edit($_REQUEST['message_id']) as $key => $hashtags) : ?>
+            <div class="hashtags_for_edit">
+              <div class="hashtag_for_preview rhashtag">#<?=$hashtags?></div>
+            </div>
+          <?php endforeach; ?>
+        </form>
+      </div>
+      
+      <?php if (!empty(load_image_for_edit($_REQUEST['message_id']))) : ?>
+        <?php foreach (load_image_for_edit($_REQUEST['message_id']) as $key => $image) : ?>
+          <div>
+            <img src="<?=$image?>" width="50" height="50"></div>
+        <?php endforeach; ?>
+      <?php endif;?>
+    </div>
+  </div>
+  
+  <br>
+  <div>Відповідь на повідомлення</div>
+  <div class="send_new_message">
+    <form action="/index.php" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="message">
+      <div>
+        <textarea name="message" placeholder="Повідомлення"></textarea>
+      </div>
+      <div id="add">
+        <div id="hashtag">
+          <input type="text" name="hashtags[]" placeholder="Введіть hashtags"></>
+      </div>
+  </div>
+  <a href="javascript:void(0);" onClick="add_field();">Click to add another hashtag</a><br />
+  <input type="file" name="fileUpload[]" id="fileUpload" multiple>
+  <input type="hidden" name="send_reply_message" value="<?=$_REQUEST['message_id']?>">
+  <p><input type="submit" value="Надіслати" name="submit"/></p>
+  </form>
+  </div>
+  
+  <form action="index.php" method="post">
+    <input type="hidden" name="action" value="main">
+    <input type="submit" value="Повернутися" name="submit">
+  </form>
+  
+  
+  <script type="text/javascript">
+      function add_field(){
+          const max = 5;
+          const cont = document.getElementById('add');
+          if (cont.getElementsByTagName("input").length < max) {
+              const div1 = document.createElement('div');
+              div1.innerHTML = document.getElementById('another_input').innerHTML;
+              document.getElementById('add').appendChild(div1);
+          } else {
+              alert("You reached the maximum number of fields that can be added in one message!");
+          }
+      }
+  </script>
+  
+  <div id="another_input" style="display:none">
+    <div id="hashtag">
+      <input type="text" name="hashtags[]" placeholder="Введіть hashtags"></>
+  </div>
+  </div>
+  
+<!--  End reply to user message-->
+  
+
+
+<!--  Begin create new user message-->
+<?php else: ?>
+  
+  <h1>Надішліть своє повідомлення</h1>
+  <div class="send_new_message">
+    <form action="/index.php" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="message">
+      <div>
+        <textarea name="message" placeholder="Повідомлення"></textarea>
+      </div>
+      <div id="add">
+        <div id="hashtag">
+          <input type="text" name="hashtags[]" placeholder="Введіть hashtags"></>
+      </div>
+  </div>
+  <a href="javascript:void(0);" onClick="add_field();">Click to add another hashtag</a><br />
+  <input type="file" name="fileUpload[]" id="fileUpload" multiple>
+  <p><input type="submit" value="Надіслати" name="submit"/></p>
+  </form>
+  </div>
+  
+  
+  <script type="text/javascript">
+      function add_field(){
+          const max = 5;
+          const cont = document.getElementById('add');
+          if (cont.getElementsByTagName("input").length < max) {
+              const div1 = document.createElement('div');
+              div1.innerHTML = document.getElementById('another_input').innerHTML;
+              document.getElementById('add').appendChild(div1);
+          } else {
+              alert("You reached the maximum number of fields that can be added in one message!");
+          }
+      }
+  </script>
+  
+  <div id="another_input" style="display:none">
+    <div id="hashtag">
+      <input type="text" name="hashtags[]" placeholder="Введіть hashtags"></>
+  </div>
+  </div>
+  
+  <form action="index.php" method="post">
+    <input type="hidden" name="action" value="main">
+    <input type="submit" value="Повернутися" name="submit">
+  </form>
+  
+
+<?php endif;?>
+
+<!-- End create new user message-->
+
+<?php _template('_footer');?>
