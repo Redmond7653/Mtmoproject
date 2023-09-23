@@ -53,11 +53,14 @@ a.mycoollink {
 
 .message {
     position: relative;
-    background-color: #faf;
+    /*background-color: #faf;*/
     transition: background-color 1s ease-out 100ms;
 }
 .preview {
     position: relative;
+    border: 1px solid;
+    margin: 10px;
+    width: max-content;
 }
 
 .message:hover {
@@ -72,10 +75,12 @@ a.mycoollink {
     font-weight: bold;
 }
 .message-container {
-    border: solid 1px;
+    border-top: solid 1px;
+    border-bottom: solid 1px;
     padding: 5px;
     margin-bottom: 5px;
     margin-top: 5px;
+
 }
 
 /*.row:nth-child(3) div:hover{*/

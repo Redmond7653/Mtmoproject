@@ -23,21 +23,26 @@ class Message
         $user_id = $db->escape_string($user_id);
 //        $message = $connect->real_escape_string($message);
         $message = $db->escape_string($message);
-
+        
+        $reply_message = '';
+      
+      if ($_REQUEST['send_reply_message']) {
+        $reply_message = $_REQUEST['send_reply_message'];
+      }
 
         $date = date('Y-m-d h:m:s');
 
-        $db->query("INSERT INTO `messages`(`user_id`,`message`,`time`) VALUES ('$user_id','$message','$date')");
+        $db->query("INSERT INTO `messages`(`user_id`,`message`,`time`, `reply_message`) VALUES ('$user_id','$message','$date', '$reply_message')");
         
-        if ($_REQUEST['send_reply_message']) {
-          $result = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$user_id' ORDER BY `id` DESC LIMIT 1");
-          
-          $last_message_created = $result->fetch_assoc();
-          
-          $id_new_message = $last_message_created['id'];
-          
-          $db->query("INSERT INTO `reply_messages`(`message_referred_to_id`, `reply_message_id`) VALUES ('{$_REQUEST['send_reply_message']}', '$id_new_message')");
-        }
+//        if ($_REQUEST['send_reply_message']) {
+//          $result = $db->query("SELECT * FROM `messages` WHERE `user_id` = '$user_id' ORDER BY `id` DESC LIMIT 1");
+//
+//          $last_message_created = $result->fetch_assoc();
+//
+//          $id_new_message = $last_message_created['id'];
+//
+//          $db->query("INSERT INTO `messages`(`reply_message`) VALUES ('{$_REQUEST['send_reply_message']}')");
+//        }
 
 
         $this->message = $message;

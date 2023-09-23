@@ -88,11 +88,11 @@ function get_image_for_message($message_id) {
 function check_for_reply_message($message_id) {
   $db = new Db();
   
-  $result = $db->query("SELECT * FROM `reply_messages` WHERE `reply_message_id` = '$message_id'");
+  $result = $db->query("SELECT * FROM `messages` WHERE `id` = '$message_id'");
   
-  $reply_array = $result->fetch_all(MYSQLI_ASSOC);
+  $reply_array = $result->fetch_assoc();
   
-  if ($reply_array) {
+  if (!empty($reply_array['reply_message'])) {
     return true;
   } else {
     return false;
@@ -134,11 +134,13 @@ function one_message($message_id) {
   $result_image = $db->query("SELECT * FROM `images` WHERE `message_id` = '$message_id'");
   $result_hashtags = $db->query("SELECT * FROM `hashtags` WHERE `message_id` = '$message_id'");
   
-  $message_array = $result_message->fetch_assoc();
+  $one_message_array = $result_message->fetch_assoc();
   $messages_image = $result_image->fetch_all(MYSQLI_ASSOC);
   $messages_hashtags = $result_hashtags->fetch_all(MYSQLI_ASSOC);
   
-  $one_message_array['message'] = $message_array['message'];
+//  $one_message_array['message'] = $message_array['message'];
+  
+  
   foreach ($messages_image as $message_image) {
     $id = $message_image['id'];
     $one_message_array['img'][$id] = $message_image['img'];
@@ -146,6 +148,8 @@ function one_message($message_id) {
   foreach ($messages_hashtags as $message_hashtag) {
     $one_message_array['hashtags'][] = $message_hashtag['hashtag'];
   }
+  
+  $one_message_array['replies'] = load_reply_messages($one_message_array['id']);
   
   return $one_message_array;
 }
@@ -187,4 +191,46 @@ function load_hashtags_for_edit($id) {
   return $hashtags;
 }
 
-//function
+
+
+function load_reply_messages($parent_id) {
+  $db = new Db();
+  
+  $reply_messages_array = [];
+  
+  $result_messages = $db->query("SELECT id FROM `messages` WHERE `reply_message` = '$parent_id'");
+  
+  while ($row = $result_messages->fetch_assoc()) {
+    $reply_messages_array[$row['id']] = one_message($row['id']);
+  }
+  
+//  $result_messages_arrays = $result_messages->fetch_all(MYSQLI_ASSOC);
+//
+//  foreach ($result_messages_arrays as $result_array) {
+//    $key = $result_array['id'];
+//    $reply_messages_array[$key] = $result_array;
+//
+//    $result_img = $db->query("SELECT * FROM `images` WHERE `message_id` = '{$key}'");
+//
+//    $result_img_arrays = $result_img->fetch_all(MYSQLI_ASSOC);
+//
+//    $result_hashtags = $db->query("SELECT * FROM `hashtags` WHERE `message_id` = '{$key}'");
+//
+//    $result_hashtags_arrays = $result_hashtags->fetch_all(MYSQLI_ASSOC);
+//
+//    foreach ($result_img_arrays as $key => $result_img_array) {
+//
+//        $reply_messages_array[$key]['img'][] = $result_img_array['img'];
+//
+//    }
+//
+//    foreach ($result_hashtags_arrays as $result_hashtags_array) {
+//
+//      $reply_messages_array[$key]['hashtags'][] = $result_hashtags_array['hashtag'];
+//
+//    }
+//
+//  }
+  
+  return $reply_messages_array;
+}
